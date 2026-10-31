@@ -1,0 +1,2070 @@
+version: '1.0'
+description: Hierarchical catalogue of AI tools for a configuration-driven AI tools platform.
+default_model: openrouter/free
+categories:
+- id: career-jobs
+  name: Career & Jobs
+  subcategories:
+  - id: career-planning
+    name: Career Planning
+    items:
+    - id: career-path-finder
+      name: Career Path Finder
+    - id: career-change-planner
+      name: Career Change Planner
+    - id: career-goal-generator
+      name: Career Goal Generator
+    - id: skill-gap-analyzer
+      name: Skill Gap Analyzer
+    - id: career-roadmap-builder
+      name: Career Roadmap Builder
+  - id: job-search
+    name: Job Search
+    items:
+    - id: job-search-strategy-generator
+      name: Job Search Strategy Generator
+    - id: job-description-analyzer
+      name: Job Description Analyzer
+    - id: job-role-matcher
+      name: Job Role Matcher
+    - id: job-application-tracker-description-generator
+      name: Job Application Tracker Description Generator
+    - id: job-search-email-writer
+      name: Job Search Email Writer
+  - id: job-applications
+    name: Job Applications
+    items:
+    - id: cover-letter-generator
+      name: Cover Letter Generator
+      sub_items:
+      - id: fresher-cover-letter
+        name: Fresher Cover Letter
+      - id: experienced-candidate-cover-letter
+        name: Experienced Candidate Cover Letter
+      - id: job-specific-cover-letter
+        name: Job-Specific Cover Letter
+    - id: job-application-email-writer
+      name: Job Application Email Writer
+    - id: application-follow-up-generator
+      name: Application Follow-up Generator
+    - id: recruiter-message-generator
+      name: Recruiter Message Generator
+    - id: referral-request-generator
+      name: Referral Request Generator
+  - id: job-matching
+    name: Job Matching
+    items:
+    - id: resume-to-jd-matcher
+      name: Resume-to-JD Matcher
+    - id: skills-match-analyzer
+      name: Skills Match Analyzer
+    - id: experience-match-analyzer
+      name: Experience Match Analyzer
+    - id: missing-skills-finder
+      name: Missing Skills Finder
+    - id: job-eligibility-checklist
+      name: Job Eligibility Checklist
+  - id: career-decisions
+    name: Career Decisions
+    items:
+    - id: offer-comparison-assistant
+      name: Offer Comparison Assistant
+    - id: career-option-comparator
+      name: Career Option Comparator
+    - id: salary-negotiation-script-generator
+      name: Salary Negotiation Script Generator
+    - id: job-switch-decision-helper
+      name: Job Switch Decision Helper
+    - id: notice-period-planner
+      name: Notice Period Planner
+- id: resumes-professional-profiles
+  name: Resumes & Professional Profiles
+  subcategories:
+  - id: resume-creation
+    name: Resume Creation
+    items:
+    - id: resume-builder
+      name: Resume Builder
+      sub_items:
+      - id: fresher-resume
+        name: Fresher Resume
+      - id: experienced-resume
+        name: Experienced Resume
+      - id: career-change-resume
+        name: Career Change Resume
+      - id: role-specific-resume
+        name: Role-Specific Resume
+    - id: fresher-resume-builder
+      name: Fresher Resume Builder
+    - id: experienced-resume-builder
+      name: Experienced Resume Builder
+    - id: internship-resume-builder
+      name: Internship Resume Builder
+    - id: career-change-resume-builder
+      name: Career Change Resume Builder
+  - id: resume-sections
+    name: Resume Sections
+    items:
+    - id: resume-summary-generator
+      name: Resume Summary Generator
+    - id: professional-headline-generator
+      name: Professional Headline Generator
+    - id: skills-section-generator
+      name: Skills Section Generator
+    - id: project-description-generator
+      name: Project Description Generator
+      sub_items:
+      - id: problem-statement
+        name: Problem Statement
+      - id: technical-implementation
+        name: Technical Implementation
+      - id: tools-and-technologies
+        name: Tools and Technologies
+      - id: results-and-impact
+        name: Results and Impact
+    - id: employment-description-generator
+      name: Employment Description Generator
+      sub_items:
+      - id: responsibilities
+        name: Responsibilities
+      - id: achievements
+        name: Achievements
+      - id: tech-stack
+        name: Tech Stack
+      - id: role-summary
+        name: Role Summary
+  - id: resume-optimization
+    name: Resume Optimization
+    items:
+    - id: ats-resume-optimizer
+      name: ATS Resume Optimizer
+    - id: resume-keyword-extractor
+      name: Resume Keyword Extractor
+    - id: resume-to-jd-optimizer
+      name: Resume-to-JD Optimizer
+    - id: resume-bullet-improver
+      name: Resume Bullet Improver
+    - id: resume-length-reducer
+      name: Resume Length Reducer
+  - id: resume-review
+    name: Resume Review
+    items:
+    - id: resume-critic
+      name: Resume Critic
+    - id: resume-score-estimator
+      name: Resume Score Estimator
+    - id: resume-gap-analyzer
+      name: Resume Gap Analyzer
+    - id: resume-grammar-checker
+      name: Resume Grammar Checker
+    - id: resume-consistency-checker
+      name: Resume Consistency Checker
+  - id: role-specific-resumes
+    name: Role-Specific Resumes
+    items:
+    - id: backend-developer-resume
+      name: Backend Developer Resume
+    - id: python-developer-resume
+      name: Python Developer Resume
+    - id: java-developer-resume
+      name: Java Developer Resume
+    - id: devops-engineer-resume
+      name: DevOps Engineer Resume
+    - id: ai-engineer-resume
+      name: AI Engineer Resume
+  - id: resume-achievements
+    name: Resume Achievements
+    items:
+    - id: achievement-generator
+      name: Achievement Generator
+    - id: impact-statement-generator
+      name: Impact Statement Generator
+    - id: star-bullet-generator
+      name: STAR Bullet Generator
+    - id: metrics-based-bullet-improver
+      name: Metrics-Based Bullet Improver
+    - id: responsibility-to-achievement-converter
+      name: Responsibility-to-Achievement Converter
+  - id: naukri-linkedin-profiles
+    name: Naukri & LinkedIn Profiles
+    items:
+    - id: naukri-headline-generator
+      name: Naukri Headline Generator
+    - id: linkedin-headline-generator
+      name: LinkedIn Headline Generator
+    - id: professional-title-generator
+      name: Professional Title Generator
+    - id: job-specific-headline-generator
+      name: Job-Specific Headline Generator
+    - id: naukri-profile-summary-generator
+      name: Naukri Profile Summary Generator
+      sub_items:
+      - id: fresher-summary
+        name: Fresher Summary
+      - id: experienced-professional-summary
+        name: Experienced Professional Summary
+      - id: role-specific-summary
+        name: Role-Specific Summary
+    - id: linkedin-about-generator
+      name: LinkedIn About Generator
+    - id: github-bio-generator
+      name: GitHub Bio Generator
+    - id: portfolio-introduction-generator
+      name: Portfolio Introduction Generator
+    - id: recruiter-search-keyword-generator
+      name: Recruiter Search Keyword Generator
+    - id: profile-completeness-checklist
+      name: Profile Completeness Checklist
+  - id: profile-skills-projects
+    name: Profile Skills & Projects
+    items:
+    - id: naukri-skills-generator
+      name: Naukri Skills Generator
+    - id: skills-keyword-extractor
+      name: Skills Keyword Extractor
+    - id: technical-skills-organizer
+      name: Technical Skills Organizer
+    - id: project-title-generator
+      name: Project Title Generator
+    - id: project-description-writer
+      name: Project Description Writer
+    - id: technical-project-summary
+      name: Technical Project Summary
+    - id: project-impact-generator
+      name: Project Impact Generator
+    - id: portfolio-project-formatter
+      name: Portfolio Project Formatter
+- id: interview-preparation
+  name: Interview Preparation
+  subcategories:
+  - id: self-introductions
+    name: Self-Introductions
+    items:
+    - id: self-introduction-generator
+      name: Self-Introduction Generator
+      sub_items:
+      - id: fresher-introduction
+        name: Fresher Introduction
+      - id: experienced-candidate-introduction
+        name: Experienced Candidate Introduction
+      - id: technical-introduction
+        name: Technical Introduction
+      - id: hr-introduction
+        name: HR Introduction
+    - id: fresher-introduction
+      name: Fresher Introduction
+    - id: experienced-candidate-introduction
+      name: Experienced Candidate Introduction
+    - id: technical-introduction
+      name: Technical Introduction
+    - id: hr-introduction
+      name: HR Introduction
+  - id: hr-interviews
+    name: HR Interviews
+    items:
+    - id: strengths-and-weaknesses-answer-generator
+      name: Strengths and Weaknesses Answer Generator
+    - id: short-term-goals-answer
+      name: Short-Term Goals Answer
+    - id: long-term-goals-answer
+      name: Long-Term Goals Answer
+    - id: why-should-we-hire-you-generator
+      name: Why Should We Hire You Generator
+    - id: why-this-company-answer
+      name: Why This Company Answer
+  - id: behavioral-interviews
+    name: Behavioral Interviews
+    items:
+    - id: star-answer-generator
+      name: STAR Answer Generator
+    - id: leadership-example-generator
+      name: Leadership Example Generator
+    - id: conflict-resolution-answer
+      name: Conflict Resolution Answer
+    - id: failure-experience-answer
+      name: Failure Experience Answer
+    - id: teamwork-example-generator
+      name: Teamwork Example Generator
+  - id: technical-interviews
+    name: Technical Interviews
+    items:
+    - id: technical-question-generator
+      name: Technical Question Generator
+    - id: project-explanation-coach
+      name: Project Explanation Coach
+    - id: architecture-explanation-generator
+      name: Architecture Explanation Generator
+    - id: technology-comparison-interviewer
+      name: Technology Comparison Interviewer
+    - id: follow-up-question-generator
+      name: Follow-up Question Generator
+  - id: company-specific-preparation
+    name: Company-Specific Preparation
+    items:
+    - id: company-interview-brief
+      name: Company Interview Brief
+    - id: company-specific-question-generator
+      name: Company-Specific Question Generator
+    - id: job-description-based-interview-prep
+      name: Job Description-Based Interview Prep
+    - id: role-expectations-analyzer
+      name: Role Expectations Analyzer
+  - id: mock-interviews-practice
+    name: Mock Interviews & Practice
+    items:
+    - id: mock-interview-generator
+      name: Mock Interview Generator
+    - id: interview-feedback-assistant
+      name: Interview Feedback Assistant
+    - id: answer-simplifier
+      name: Answer Simplifier
+    - id: answer-length-optimizer
+      name: Answer Length Optimizer
+    - id: interview-revision-notes-generator
+      name: Interview Revision Notes Generator
+  - id: salary-offers-joining
+    name: Salary, Offers & Joining
+    items:
+    - id: salary-negotiation-email
+      name: Salary Negotiation Email
+    - id: hr-negotiation-script
+      name: HR Negotiation Script
+    - id: expected-salary-answer
+      name: Expected Salary Answer
+    - id: counteroffer-generator
+      name: Counteroffer Generator
+    - id: joining-bonus-negotiation-script
+      name: Joining Bonus Negotiation Script
+    - id: ctc-breakdown-explainer
+      name: CTC Breakdown Explainer
+    - id: fixed-versus-variable-pay-comparator
+      name: Fixed-versus-Variable Pay Comparator
+    - id: offer-comparison-table-generator
+      name: Offer Comparison Table Generator
+    - id: offer-acceptance-email
+      name: Offer Acceptance Email
+    - id: offer-decline-email
+      name: Offer Decline Email
+    - id: resignation-email
+      name: Resignation Email
+    - id: joining-date-request
+      name: Joining Date Request
+    - id: notice-period-extension-request
+      name: Notice Period Extension Request
+- id: writing-communication
+  name: Writing & Communication
+  subcategories:
+  - id: general-writing
+    name: General Writing
+    items:
+    - id: sentence-rewriter
+      name: Sentence Rewriter
+    - id: paragraph-rewriter
+      name: Paragraph Rewriter
+    - id: professional-rewriter
+      name: Professional Rewriter
+    - id: friendly-rewriter
+      name: Friendly Rewriter
+    - id: formal-to-casual-converter
+      name: Formal-to-Casual Converter
+    - id: grammar-corrector
+      name: Grammar Corrector
+    - id: spelling-corrector
+      name: Spelling Corrector
+    - id: punctuation-fixer
+      name: Punctuation Fixer
+    - id: clarity-improver
+      name: Clarity Improver
+    - id: redundancy-remover
+      name: Redundancy Remover
+    - id: text-summarizer
+      name: Text Summarizer
+      sub_items:
+      - id: short-summary
+        name: Short Summary
+      - id: bullet-summary
+        name: Bullet Summary
+      - id: executive-summary
+        name: Executive Summary
+      - id: key-takeaways
+        name: Key Takeaways
+    - id: long-article-summarizer
+      name: Long Article Summarizer
+    - id: meeting-notes-summarizer
+      name: Meeting Notes Summarizer
+    - id: executive-summary-generator
+      name: Executive Summary Generator
+    - id: key-points-extractor
+      name: Key Points Extractor
+    - id: short-to-long-text-expander
+      name: Short-to-Long Text Expander
+    - id: simple-english-converter
+      name: Simple English Converter
+    - id: difficult-word-simplifier
+      name: Difficult Word Simplifier
+    - id: tone-changer
+      name: Tone Changer
+    - id: polite-message-converter
+      name: Polite Message Converter
+  - id: email-workplace-communication
+    name: Email & Workplace Communication
+    items:
+    - id: professional-email-writer
+      name: Professional Email Writer
+      sub_items:
+      - id: request-email
+        name: Request Email
+      - id: follow-up-email
+        name: Follow-up Email
+      - id: apology-email
+        name: Apology Email
+      - id: thank-you-email
+        name: Thank-you Email
+    - id: follow-up-email-generator
+      name: Follow-up Email Generator
+    - id: reminder-email-generator
+      name: Reminder Email Generator
+    - id: apology-email-generator
+      name: Apology Email Generator
+    - id: thank-you-email-generator
+      name: Thank-you Email Generator
+    - id: hr-query-writer
+      name: HR Query Writer
+    - id: offer-clarification-email
+      name: Offer Clarification Email
+    - id: employment-verification-request
+      name: Employment Verification Request
+    - id: background-verification-follow-up
+      name: Background Verification Follow-up
+    - id: joining-confirmation-email
+      name: Joining Confirmation Email
+    - id: slack-message-writer
+      name: Slack Message Writer
+    - id: teams-message-writer
+      name: Teams Message Writer
+    - id: status-update-generator
+      name: Status Update Generator
+    - id: leave-request-generator
+      name: Leave Request Generator
+    - id: work-from-home-request
+      name: Work-from-Home Request
+    - id: escalation-email-generator
+      name: Escalation Email Generator
+    - id: meeting-agenda-generator
+      name: Meeting Agenda Generator
+    - id: meeting-minutes-formatter
+      name: Meeting Minutes Formatter
+    - id: action-items-extractor
+      name: Action Items Extractor
+    - id: meeting-follow-up-email
+      name: Meeting Follow-up Email
+  - id: personal-social-writing
+    name: Personal & Social Writing
+    items:
+    - id: instagram-caption-generator
+      name: Instagram Caption Generator
+    - id: whatsapp-status-generator
+      name: WhatsApp Status Generator
+    - id: facebook-post-writer
+      name: Facebook Post Writer
+    - id: x-post-generator
+      name: X Post Generator
+    - id: linkedin-post-generator
+      name: LinkedIn Post Generator
+    - id: birthday-wishes-generator
+      name: Birthday Wishes Generator
+    - id: anniversary-message-generator
+      name: Anniversary Message Generator
+    - id: congratulations-message-generator
+      name: Congratulations Message Generator
+    - id: invitation-writer
+      name: Invitation Writer
+    - id: friendly-reply-generator
+      name: Friendly Reply Generator
+    - id: appreciation-message-generator
+      name: Appreciation Message Generator
+    - id: personal-bio-generator
+      name: Personal Bio Generator
+    - id: about-me-writer
+      name: About Me Writer
+    - id: short-introduction-generator
+      name: Short Introduction Generator
+- id: education-learning
+  name: Education & Learning
+  subcategories:
+  - id: study-assistance
+    name: Study Assistance
+    items:
+    - id: topic-explainer
+      name: Topic Explainer
+    - id: beginner-learning-guide
+      name: Beginner Learning Guide
+    - id: study-plan-generator
+      name: Study Plan Generator
+    - id: learning-roadmap-builder
+      name: Learning Roadmap Builder
+    - id: concept-simplifier
+      name: Concept Simplifier
+    - id: chapter-notes-generator
+      name: Chapter Notes Generator
+    - id: revision-notes-generator
+      name: Revision Notes Generator
+    - id: lecture-notes-summarizer
+      name: Lecture Notes Summarizer
+    - id: important-questions-generator
+      name: Important Questions Generator
+    - id: quiz-generator
+      name: Quiz Generator
+    - id: multiple-choice-question-generator
+      name: Multiple-Choice Question Generator
+    - id: flashcard-generator
+      name: Flashcard Generator
+    - id: practice-test-generator
+      name: Practice Test Generator
+    - id: exam-timetable-generator
+      name: Exam Timetable Generator
+    - id: mnemonic-generator
+      name: Mnemonic Generator
+    - id: spaced-repetition-plan-generator
+      name: Spaced Repetition Plan Generator
+  - id: programming-education
+    name: Programming Education
+    items:
+    - id: programming-concept-explainer
+      name: Programming Concept Explainer
+    - id: code-example-generator
+      name: Code Example Generator
+    - id: algorithm-explainer
+      name: Algorithm Explainer
+    - id: pseudocode-generator
+      name: Pseudocode Generator
+    - id: time-complexity-explainer
+      name: Time Complexity Explainer
+    - id: coding-problem-generator
+      name: Coding Problem Generator
+    - id: beginner-coding-exercises
+      name: Beginner Coding Exercises
+    - id: dsa-practice-planner
+      name: DSA Practice Planner
+    - id: error-message-explainer
+      name: Error Message Explainer
+    - id: code-walkthrough-generator
+      name: Code Walkthrough Generator
+    - id: python-learning-roadmap
+      name: Python Learning Roadmap
+    - id: java-learning-roadmap
+      name: Java Learning Roadmap
+    - id: javascript-learning-roadmap
+      name: JavaScript Learning Roadmap
+    - id: sql-learning-roadmap
+      name: SQL Learning Roadmap
+    - id: fastapi-learning-roadmap
+      name: FastAPI Learning Roadmap
+    - id: oop-interview-questions
+      name: OOP Interview Questions
+    - id: database-interview-questions
+      name: Database Interview Questions
+    - id: networking-interview-questions
+      name: Networking Interview Questions
+    - id: operating-system-interview-questions
+      name: Operating System Interview Questions
+    - id: system-design-questions
+      name: System Design Questions
+  - id: language-learning
+    name: Language Learning
+    items:
+    - id: vocabulary-builder
+      name: Vocabulary Builder
+    - id: word-meaning-explainer
+      name: Word Meaning Explainer
+    - id: synonym-finder
+      name: Synonym Finder
+    - id: antonym-finder
+      name: Antonym Finder
+    - id: daily-word-practice
+      name: Daily Word Practice
+    - id: grammar-explainer
+      name: Grammar Explainer
+    - id: sentence-correction
+      name: Sentence Correction
+    - id: tense-practice-generator
+      name: Tense Practice Generator
+    - id: conversation-practice-generator
+      name: Conversation Practice Generator
+    - id: english-speaking-practice
+      name: English Speaking Practice
+    - id: interview-english-coach
+      name: Interview English Coach
+    - id: paragraph-practice-generator
+      name: Paragraph Practice Generator
+    - id: essay-feedback-assistant
+      name: Essay Feedback Assistant
+- id: programming-software-development
+  name: Programming & Software Development
+  subcategories:
+  - id: coding-assistants
+    name: Coding Assistants
+    items:
+    - id: function-generator
+      name: Function Generator
+    - id: class-generator
+      name: Class Generator
+    - id: api-endpoint-generator
+      name: API Endpoint Generator
+    - id: crud-code-generator
+      name: CRUD Code Generator
+    - id: boilerplate-generator
+      name: Boilerplate Generator
+    - id: code-explainer
+      name: Code Explainer
+    - id: function-documentation-generator
+      name: Function Documentation Generator
+    - id: repository-overview-generator
+      name: Repository Overview Generator
+    - id: architecture-summary-generator
+      name: Architecture Summary Generator
+    - id: code-refactoring-assistant
+      name: Code Refactoring Assistant
+    - id: naming-improver
+      name: Naming Improver
+    - id: readability-improver
+      name: Readability Improver
+    - id: design-pattern-suggestion
+      name: Design Pattern Suggestion
+    - id: code-review-assistant
+      name: Code Review Assistant
+    - id: code-smell-detector
+      name: Code Smell Detector
+    - id: complexity-review-assistant
+      name: Complexity Review Assistant
+    - id: coding-standards-checker
+      name: Coding Standards Checker
+  - id: backend-development
+    name: Backend Development
+    items:
+    - id: rest-api-design-assistant
+      name: REST API Design Assistant
+    - id: endpoint-documentation-generator
+      name: Endpoint Documentation Generator
+    - id: request-and-response-schema-generator
+      name: Request and Response Schema Generator
+    - id: http-status-code-explainer
+      name: HTTP Status Code Explainer
+    - id: api-error-response-designer
+      name: API Error Response Designer
+    - id: python-function-generator
+      name: Python Function Generator
+    - id: fastapi-endpoint-generator
+      name: FastAPI Endpoint Generator
+    - id: pydantic-schema-generator
+      name: Pydantic Schema Generator
+    - id: async-code-reviewer
+      name: Async Code Reviewer
+    - id: spring-boot-service-generator
+      name: Spring Boot Service Generator
+    - id: java-dto-generator
+      name: Java DTO Generator
+    - id: hibernate-entity-generator
+      name: Hibernate Entity Generator
+    - id: sql-query-generator
+      name: SQL Query Generator
+      sub_items:
+      - id: select-queries
+        name: SELECT Queries
+      - id: join-queries
+        name: JOIN Queries
+      - id: aggregation-queries
+        name: Aggregation Queries
+      - id: data-modification-queries
+        name: Data Modification Queries
+    - id: sql-query-explainer
+      name: SQL Query Explainer
+    - id: schema-design-assistant
+      name: Schema Design Assistant
+    - id: database-indexing-advisor
+      name: Database Indexing Advisor
+    - id: microservice-design-assistant
+      name: Microservice Design Assistant
+    - id: event-driven-architecture-explainer
+      name: Event-Driven Architecture Explainer
+    - id: caching-strategy-advisor
+      name: Caching Strategy Advisor
+    - id: api-versioning-planner
+      name: API Versioning Planner
+  - id: frontend-full-stack
+    name: Frontend & Full-Stack
+    items:
+    - id: react-component-generator
+      name: React Component Generator
+    - id: form-validation-generator
+      name: Form Validation Generator
+    - id: ui-text-generator
+      name: UI Text Generator
+    - id: component-documentation-writer
+      name: Component Documentation Writer
+    - id: state-management-explainer
+      name: State Management Explainer
+    - id: full-stack-project-planner
+      name: Full-Stack Project Planner
+    - id: frontend-backend-integration-guide
+      name: Frontend-Backend Integration Guide
+    - id: authentication-flow-designer
+      name: Authentication Flow Designer
+    - id: api-integration-code-generator
+      name: API Integration Code Generator
+    - id: html-generator
+      name: HTML Generator
+    - id: css-layout-assistant
+      name: CSS Layout Assistant
+    - id: javascript-explainer
+      name: JavaScript Explainer
+    - id: responsive-design-checklist
+      name: Responsive Design Checklist
+    - id: project-readme-generator
+      name: Project README Generator
+  - id: devops-cloud
+    name: DevOps & Cloud
+    items:
+    - id: dockerfile-generator
+      name: Dockerfile Generator
+    - id: docker-compose-generator
+      name: Docker Compose Generator
+    - id: container-optimization-reviewer
+      name: Container Optimization Reviewer
+    - id: container-troubleshooting-guide
+      name: Container Troubleshooting Guide
+    - id: kubernetes-yaml-drafting-assistant
+      name: Kubernetes YAML Drafting Assistant
+    - id: deployment-manifest-generator
+      name: Deployment Manifest Generator
+    - id: service-configuration-generator
+      name: Service Configuration Generator
+    - id: helm-values-generator
+      name: Helm Values Generator
+    - id: github-actions-workflow-generator
+      name: GitHub Actions Workflow Generator
+    - id: jenkins-pipeline-generator
+      name: Jenkins Pipeline Generator
+    - id: ci-cd-troubleshooting-assistant
+      name: CI/CD Troubleshooting Assistant
+    - id: aws-architecture-explainer
+      name: AWS Architecture Explainer
+    - id: gcp-architecture-explainer
+      name: GCP Architecture Explainer
+    - id: azure-service-comparison
+      name: Azure Service Comparison
+    - id: cloud-cost-optimization-suggestions
+      name: Cloud Cost Optimization Suggestions
+    - id: cloud-migration-planner
+      name: Cloud Migration Planner
+    - id: terraform-module-generator
+      name: Terraform Module Generator
+    - id: infrastructure-documentation-generator
+      name: Infrastructure Documentation Generator
+    - id: log-analysis-assistant
+      name: Log Analysis Assistant
+    - id: incident-summary-generator
+      name: Incident Summary Generator
+    - id: root-cause-analysis-drafting-assistant
+      name: Root Cause Analysis Drafting Assistant
+    - id: monitoring-plan-generator
+      name: Monitoring Plan Generator
+  - id: testing-quality-assurance
+    name: Testing & Quality Assurance
+    items:
+    - id: unit-test-generator
+      name: Unit Test Generator
+    - id: api-test-generator
+      name: API Test Generator
+    - id: integration-test-planner
+      name: Integration Test Planner
+    - id: edge-case-generator
+      name: Edge Case Generator
+    - id: test-data-generator
+      name: Test Data Generator
+    - id: pytest-test-generator
+      name: Pytest Test Generator
+    - id: junit-test-generator
+      name: JUnit Test Generator
+    - id: playwright-test-generator
+      name: Playwright Test Generator
+    - id: selenium-test-generator
+      name: Selenium Test Generator
+    - id: bug-report-writer
+      name: Bug Report Writer
+    - id: reproduction-steps-generator
+      name: Reproduction Steps Generator
+    - id: severity-classification-assistant
+      name: Severity Classification Assistant
+    - id: test-plan-generator
+      name: Test Plan Generator
+    - id: regression-checklist-generator
+      name: Regression Checklist Generator
+    - id: test-coverage-review-assistant
+      name: Test Coverage Review Assistant
+    - id: release-testing-checklist
+      name: Release Testing Checklist
+- id: ai-prompt-engineering
+  name: AI & Prompt Engineering
+  subcategories:
+  - id: ai-prompt-tools
+    name: AI Prompt Tools
+    items:
+    - id: prompt-generator
+      name: Prompt Generator
+    - id: system-message-generator
+      name: System Message Generator
+    - id: role-description-generator
+      name: Role Description Generator
+    - id: instruction-improver
+      name: Instruction Improver
+    - id: context-builder
+      name: Context Builder
+    - id: prompt-simplifier
+      name: Prompt Simplifier
+    - id: prompt-rewriter
+      name: Prompt Rewriter
+    - id: prompt-debugging-assistant
+      name: Prompt Debugging Assistant
+    - id: output-format-enforcer
+      name: Output Format Enforcer
+    - id: prompt-quality-reviewer
+      name: Prompt Quality Reviewer
+    - id: json-prompt-generator
+      name: JSON Prompt Generator
+    - id: extraction-prompt-generator
+      name: Extraction Prompt Generator
+    - id: classification-prompt-generator
+      name: Classification Prompt Generator
+    - id: prompt-comparison-planner
+      name: Prompt Comparison Planner
+    - id: response-quality-rubric-generator
+      name: Response Quality Rubric Generator
+    - id: test-prompt-generator
+      name: Test Prompt Generator
+  - id: llm-application-development
+    name: LLM Application Development
+    items:
+    - id: rag-architecture-planner
+      name: RAG Architecture Planner
+    - id: chunking-strategy-advisor
+      name: Chunking Strategy Advisor
+    - id: retrieval-evaluation-checklist
+      name: Retrieval Evaluation Checklist
+    - id: document-ingestion-planner
+      name: Document Ingestion Planner
+    - id: ai-agent-specification-generator
+      name: AI Agent Specification Generator
+    - id: tool-calling-schema-generator
+      name: Tool Calling Schema Generator
+    - id: agent-workflow-planner
+      name: Agent Workflow Planner
+    - id: agent-failure-analysis-assistant
+      name: Agent Failure Analysis Assistant
+    - id: langchain-learning-assistant
+      name: LangChain Learning Assistant
+    - id: langgraph-workflow-planner
+      name: LangGraph Workflow Planner
+    - id: mcp-server-specification-generator
+      name: MCP Server Specification Generator
+    - id: litellm-integration-planner
+      name: LiteLLM Integration Planner
+    - id: llm-observability-plan-generator
+      name: LLM Observability Plan Generator
+    - id: ai-evaluation-dataset-generator
+      name: AI Evaluation Dataset Generator
+    - id: hallucination-risk-checklist
+      name: Hallucination Risk Checklist
+    - id: ai-cost-optimization-planner
+      name: AI Cost Optimization Planner
+- id: business-entrepreneurship
+  name: Business & Entrepreneurship
+  subcategories:
+  - id: business-ideas
+    name: Business Ideas
+    items:
+    - id: business-idea-generator
+      name: Business Idea Generator
+    - id: startup-idea-evaluator
+      name: Startup Idea Evaluator
+    - id: local-business-idea-generator
+      name: Local Business Idea Generator
+    - id: online-business-planner
+      name: Online Business Planner
+    - id: business-opportunity-analyzer
+      name: Business Opportunity Analyzer
+  - id: business-planning
+    name: Business Planning
+    items:
+    - id: business-plan-generator
+      name: Business Plan Generator
+    - id: executive-summary-writer
+      name: Executive Summary Writer
+    - id: business-model-canvas-assistant
+      name: Business Model Canvas Assistant
+    - id: value-proposition-generator
+      name: Value Proposition Generator
+    - id: business-roadmap-builder
+      name: Business Roadmap Builder
+  - id: market-research-strategy
+    name: Market Research & Strategy
+    items:
+    - id: competitor-analysis-framework
+      name: Competitor Analysis Framework
+    - id: customer-persona-generator
+      name: Customer Persona Generator
+    - id: market-research-questionnaire
+      name: Market Research Questionnaire
+    - id: swot-analysis-generator
+      name: SWOT Analysis Generator
+    - id: market-entry-checklist
+      name: Market Entry Checklist
+  - id: operations-startup
+    name: Operations & Startup
+    items:
+    - id: standard-operating-procedure-writer
+      name: Standard Operating Procedure Writer
+    - id: business-process-documenter
+      name: Business Process Documenter
+    - id: operations-checklist-generator
+      name: Operations Checklist Generator
+    - id: startup-pitch-generator
+      name: Startup Pitch Generator
+    - id: founder-introduction-writer
+      name: Founder Introduction Writer
+    - id: investor-update-generator
+      name: Investor Update Generator
+    - id: pitch-deck-content-planner
+      name: Pitch Deck Content Planner
+    - id: startup-launch-checklist
+      name: Startup Launch Checklist
+- id: marketing-social-media
+  name: Marketing & Social Media
+  subcategories:
+  - id: marketing-strategy
+    name: Marketing Strategy
+    items:
+    - id: marketing-plan-generator
+      name: Marketing Plan Generator
+    - id: campaign-strategy-builder
+      name: Campaign Strategy Builder
+    - id: audience-segmentation-planner
+      name: Audience Segmentation Planner
+    - id: brand-positioning-assistant
+      name: Brand Positioning Assistant
+    - id: campaign-brief-generator
+      name: Campaign Brief Generator
+    - id: product-launch-campaign-planner
+      name: Product Launch Campaign Planner
+    - id: marketing-calendar-generator
+      name: Marketing Calendar Generator
+    - id: campaign-review-framework
+      name: Campaign Review Framework
+    - id: marketing-kpi-explainer
+      name: Marketing KPI Explainer
+    - id: marketing-experiment-planner
+      name: Marketing Experiment Planner
+  - id: advertising-branding
+    name: Advertising & Branding
+    items:
+    - id: ad-copy-generator
+      name: Ad Copy Generator
+    - id: google-ads-copy-drafting-assistant
+      name: Google Ads Copy Drafting Assistant
+    - id: facebook-ad-copy-generator
+      name: Facebook Ad Copy Generator
+    - id: call-to-action-generator
+      name: Call-to-Action Generator
+    - id: brand-name-generator
+      name: Brand Name Generator
+    - id: brand-voice-guide-generator
+      name: Brand Voice Guide Generator
+    - id: tagline-generator
+      name: Tagline Generator
+    - id: brand-story-writer
+      name: Brand Story Writer
+    - id: brand-messaging-assistant
+      name: Brand Messaging Assistant
+  - id: social-media
+    name: Social Media
+    items:
+    - id: linkedin-carousel-content-planner
+      name: LinkedIn Carousel Content Planner
+    - id: linkedin-outreach-message-generator
+      name: LinkedIn Outreach Message Generator
+    - id: reel-script-writer
+      name: Reel Script Writer
+    - id: story-idea-generator
+      name: Story Idea Generator
+    - id: youtube-video-title-generator
+      name: YouTube Video Title Generator
+    - id: video-description-writer
+      name: Video Description Writer
+    - id: script-outline-generator
+      name: Script Outline Generator
+    - id: hook-generator
+      name: Hook Generator
+    - id: short-form-video-script-writer
+      name: Short-Form Video Script Writer
+    - id: content-calendar-generator
+      name: Content Calendar Generator
+    - id: weekly-post-planner
+      name: Weekly Post Planner
+    - id: content-repurposing-assistant
+      name: Content Repurposing Assistant
+  - id: blogging-content-creation
+    name: Blogging & Content Creation
+    items:
+    - id: blog-outline-generator
+      name: Blog Outline Generator
+    - id: blog-drafting-assistant
+      name: Blog Drafting Assistant
+    - id: introduction-generator
+      name: Introduction Generator
+    - id: conclusion-generator
+      name: Conclusion Generator
+    - id: faq-section-generator
+      name: FAQ Section Generator
+    - id: short-story-generator
+      name: Short Story Generator
+    - id: story-outline-builder
+      name: Story Outline Builder
+    - id: character-profile-generator
+      name: Character Profile Generator
+    - id: dialogue-generator
+      name: Dialogue Generator
+    - id: poetry-generator
+      name: Poetry Generator
+    - id: slogan-generator
+      name: Slogan Generator
+    - id: headline-rewriter
+      name: Headline Rewriter
+    - id: blog-to-linkedin-converter
+      name: Blog-to-LinkedIn Converter
+    - id: blog-to-email-converter
+      name: Blog-to-Email Converter
+    - id: long-to-short-content-converter
+      name: Long-to-Short Content Converter
+  - id: seo-website-content
+    name: SEO & Website Content
+    items:
+    - id: seo-title-generator
+      name: SEO Title Generator
+    - id: meta-description-generator
+      name: Meta Description Generator
+    - id: faq-generator
+      name: FAQ Generator
+    - id: content-brief-generator
+      name: Content Brief Generator
+    - id: keyword-grouping-assistant
+      name: Keyword Grouping Assistant
+    - id: topic-cluster-planner
+      name: Topic Cluster Planner
+    - id: blog-topic-generator
+      name: Blog Topic Generator
+    - id: content-gap-analysis-framework
+      name: Content Gap Analysis Framework
+    - id: search-intent-classifier
+      name: Search Intent Classifier
+    - id: homepage-copy-generator
+      name: Homepage Copy Generator
+    - id: about-page-writer
+      name: About Page Writer
+    - id: services-page-writer
+      name: Services Page Writer
+    - id: landing-page-copy-generator
+      name: Landing Page Copy Generator
+    - id: product-description-writer
+      name: Product Description Writer
+    - id: product-title-optimizer
+      name: Product Title Optimizer
+- id: documents-office-work
+  name: Documents & Office Work
+  subcategories:
+  - id: reports-proposals
+    name: Reports & Proposals
+    items:
+    - id: report-writer
+      name: Report Writer
+    - id: executive-report-generator
+      name: Executive Report Generator
+    - id: project-status-report-generator
+      name: Project Status Report Generator
+    - id: incident-report-writer
+      name: Incident Report Writer
+    - id: business-proposal-writer
+      name: Business Proposal Writer
+    - id: project-proposal-generator
+      name: Project Proposal Generator
+    - id: service-proposal-generator
+      name: Service Proposal Generator
+    - id: sponsorship-proposal-drafting-assistant
+      name: Sponsorship Proposal Drafting Assistant
+  - id: documentation-templates
+    name: Documentation & Templates
+    items:
+    - id: technical-documentation-generator
+      name: Technical Documentation Generator
+    - id: user-guide-writer
+      name: User Guide Writer
+    - id: sop-generator
+      name: SOP Generator
+    - id: process-documentation-assistant
+      name: Process Documentation Assistant
+    - id: checklist-generator
+      name: Checklist Generator
+    - id: meeting-template-generator
+      name: Meeting Template Generator
+    - id: project-brief-template
+      name: Project Brief Template
+    - id: requirements-document-generator
+      name: Requirements Document Generator
+  - id: presentations
+    name: Presentations
+    items:
+    - id: presentation-outline-generator
+      name: Presentation Outline Generator
+    - id: slide-content-generator
+      name: Slide Content Generator
+    - id: speaker-notes-writer
+      name: Speaker Notes Writer
+    - id: presentation-summary-generator
+      name: Presentation Summary Generator
+  - id: data-analysis-reporting
+    name: Data Analysis & Reporting
+    items:
+    - id: dataset-description-generator
+      name: Dataset Description Generator
+    - id: column-meaning-explainer
+      name: Column Meaning Explainer
+    - id: data-dictionary-generator
+      name: Data Dictionary Generator
+    - id: data-quality-checklist
+      name: Data Quality Checklist
+    - id: exploratory-analysis-planner
+      name: Exploratory Analysis Planner
+    - id: trend-explanation-assistant
+      name: Trend Explanation Assistant
+    - id: kpi-interpretation-assistant
+      name: KPI Interpretation Assistant
+    - id: sql-analysis-query-generator
+      name: SQL Analysis Query Generator
+    - id: pandas-code-generator
+      name: Pandas Code Generator
+    - id: data-cleaning-script-generator
+      name: Data Cleaning Script Generator
+    - id: chart-recommendation-assistant
+      name: Chart Recommendation Assistant
+    - id: weekly-report-generator
+      name: Weekly Report Generator
+    - id: monthly-report-writer
+      name: Monthly Report Writer
+    - id: business-insights-summary
+      name: Business Insights Summary
+    - id: decision-matrix-generator
+      name: Decision Matrix Generator
+  - id: finance-budgeting
+    name: Finance & Budgeting
+    items:
+    - id: monthly-budget-planner
+      name: Monthly Budget Planner
+    - id: expense-categorization-assistant
+      name: Expense Categorization Assistant
+    - id: savings-goal-planner
+      name: Savings Goal Planner
+    - id: budget-review-assistant
+      name: Budget Review Assistant
+    - id: salary-breakdown-explainer
+      name: Salary Breakdown Explainer
+    - id: salary-comparison-worksheet
+      name: Salary Comparison Worksheet
+    - id: invoice-description-writer
+      name: Invoice Description Writer
+    - id: payment-reminder-writer
+      name: Payment Reminder Writer
+    - id: compound-interest-explainer
+      name: Compound Interest Explainer
+    - id: loan-terminology-explainer
+      name: Loan Terminology Explainer
+    - id: investment-concept-explainer
+      name: Investment Concept Explainer
+    - id: financial-terms-dictionary
+      name: Financial Terms Dictionary
+- id: freelancing-remote-work
+  name: Freelancing & Remote Work
+  subcategories:
+  - id: freelancing
+    name: Freelancing
+    items:
+    - id: freelancer-profile-writer
+      name: Freelancer Profile Writer
+    - id: gig-description-generator
+      name: Gig Description Generator
+    - id: freelance-proposal-writer
+      name: Freelance Proposal Writer
+    - id: client-pitch-generator
+      name: Client Pitch Generator
+    - id: project-pricing-framework
+      name: Project Pricing Framework
+    - id: scope-to-estimate-assistant
+      name: Scope-to-Estimate Assistant
+  - id: client-communication
+    name: Client Communication
+    items:
+    - id: project-update-email
+      name: Project Update Email
+    - id: scope-clarification-message
+      name: Scope Clarification Message
+    - id: revision-request-response
+      name: Revision Request Response
+    - id: payment-follow-up-writer
+      name: Payment Follow-up Writer
+    - id: remote-work-introduction
+      name: Remote Work Introduction
+    - id: async-status-update-generator
+      name: Async Status Update Generator
+    - id: meeting-summary-writer
+      name: Meeting Summary Writer
+- id: hr-recruitment
+  name: HR & Recruitment
+  subcategories:
+  - id: recruitment
+    name: Recruitment
+    items:
+    - id: job-description-generator
+      name: Job Description Generator
+    - id: job-requirement-extractor
+      name: Job Requirement Extractor
+    - id: interview-question-generator
+      name: Interview Question Generator
+    - id: candidate-evaluation-rubric
+      name: Candidate Evaluation Rubric
+    - id: interview-invitation-writer
+      name: Interview Invitation Writer
+    - id: rejection-email-writer
+      name: Rejection Email Writer
+    - id: offer-email-drafting-assistant
+      name: Offer Email Drafting Assistant
+    - id: candidate-follow-up-writer
+      name: Candidate Follow-up Writer
+  - id: onboarding-performance
+    name: Onboarding & Performance
+    items:
+    - id: employee-onboarding-checklist
+      name: Employee Onboarding Checklist
+    - id: new-hire-welcome-message
+      name: New Hire Welcome Message
+    - id: first-week-plan-generator
+      name: First-Week Plan Generator
+    - id: role-expectations-document
+      name: Role Expectations Document
+    - id: performance-review-drafting-assistant
+      name: Performance Review Drafting Assistant
+    - id: feedback-message-writer
+      name: Feedback Message Writer
+    - id: goal-setting-assistant
+      name: Goal Setting Assistant
+    - id: development-plan-generator
+      name: Development Plan Generator
+  - id: hr-policies
+    name: HR Policies
+    items:
+    - id: leave-policy-drafting-assistant
+      name: Leave Policy Drafting Assistant
+    - id: remote-work-policy-drafting-assistant
+      name: Remote Work Policy Drafting Assistant
+    - id: employee-handbook-outline
+      name: Employee Handbook Outline
+    - id: workplace-procedure-writer
+      name: Workplace Procedure Writer
+- id: customer-support
+  name: Customer Support
+  subcategories:
+  - id: customer-replies
+    name: Customer Replies
+    items:
+    - id: support-reply-generator
+      name: Support Reply Generator
+    - id: polite-complaint-response
+      name: Polite Complaint Response
+    - id: refund-request-response
+      name: Refund Request Response
+    - id: delay-notification-writer
+      name: Delay Notification Writer
+    - id: product-inquiry-reply
+      name: Product Inquiry Reply
+    - id: review-response-writer
+      name: Review Response Writer
+  - id: troubleshooting-knowledge-base
+    name: Troubleshooting & Knowledge Base
+    items:
+    - id: troubleshooting-guide-generator
+      name: Troubleshooting Guide Generator
+    - id: diagnostic-question-generator
+      name: Diagnostic Question Generator
+    - id: step-by-step-support-instructions
+      name: Step-by-Step Support Instructions
+    - id: help-article-generator
+      name: Help Article Generator
+    - id: faq-generator
+      name: FAQ Generator
+    - id: support-documentation-writer
+      name: Support Documentation Writer
+    - id: knowledge-base-article-rewriter
+      name: Knowledge Base Article Rewriter
+  - id: support-operations
+    name: Support Operations
+    items:
+    - id: support-reply-reviewer
+      name: Support Reply Reviewer
+    - id: tone-checker
+      name: Tone Checker
+    - id: escalation-summary-generator
+      name: Escalation Summary Generator
+    - id: ticket-summary-generator
+      name: Ticket Summary Generator
+    - id: ticket-categorization-assistant
+      name: Ticket Categorization Assistant
+    - id: resolution-summary-writer
+      name: Resolution Summary Writer
+    - id: support-handover-notes
+      name: Support Handover Notes
+- id: sales-business-development
+  name: Sales & Business Development
+  subcategories:
+  - id: sales-outreach
+    name: Sales Outreach
+    items:
+    - id: cold-email-writer
+      name: Cold Email Writer
+    - id: sales-introduction-generator
+      name: Sales Introduction Generator
+    - id: linkedin-outreach-writer
+      name: LinkedIn Outreach Writer
+    - id: follow-up-sequence-generator
+      name: Follow-up Sequence Generator
+  - id: sales-documents
+    name: Sales Documents
+    items:
+    - id: sales-proposal-writer
+      name: Sales Proposal Writer
+    - id: product-pitch-generator
+      name: Product Pitch Generator
+    - id: sales-presentation-outline
+      name: Sales Presentation Outline
+    - id: meeting-recap-generator
+      name: Meeting Recap Generator
+    - id: competitor-comparison-framework
+      name: Competitor Comparison Framework
+  - id: sales-operations
+    name: Sales Operations
+    items:
+    - id: objection-handling-script-generator
+      name: Objection Handling Script Generator
+    - id: price-objection-response
+      name: Price Objection Response
+    - id: crm-note-formatter
+      name: CRM Note Formatter
+    - id: lead-summary-generator
+      name: Lead Summary Generator
+    - id: discovery-call-question-generator
+      name: Discovery Call Question Generator
+    - id: opportunity-handover-summary
+      name: Opportunity Handover Summary
+    - id: sales-call-preparation-assistant
+      name: Sales Call Preparation Assistant
+    - id: account-plan-generator
+      name: Account Plan Generator
+    - id: sales-review-summary
+      name: Sales Review Summary
+- id: research-knowledge-management
+  name: Research & Knowledge Management
+  subcategories:
+  - id: research-planning
+    name: Research Planning
+    items:
+    - id: research-question-generator
+      name: Research Question Generator
+    - id: research-outline-builder
+      name: Research Outline Builder
+    - id: literature-review-plan
+      name: Literature Review Plan
+    - id: research-methodology-explainer
+      name: Research Methodology Explainer
+  - id: reading-synthesis
+    name: Reading & Synthesis
+    items:
+    - id: article-summarizer
+      name: Article Summarizer
+    - id: research-paper-explainer
+      name: Research Paper Explainer
+    - id: abstract-rewriter
+      name: Abstract Rewriter
+    - id: key-findings-extractor
+      name: Key Findings Extractor
+    - id: multi-document-summary
+      name: Multi-Document Summary
+    - id: argument-comparison-assistant
+      name: Argument Comparison Assistant
+    - id: evidence-table-drafting-assistant
+      name: Evidence Table Drafting Assistant
+    - id: research-gap-hypothesis-generator
+      name: Research Gap Hypothesis Generator
+  - id: knowledge-management
+    name: Knowledge Management
+    items:
+    - id: knowledge-base-article-writer
+      name: Knowledge Base Article Writer
+    - id: personal-knowledge-note-formatter
+      name: Personal Knowledge Note Formatter
+    - id: topic-map-generator
+      name: Topic Map Generator
+    - id: study-reference-organizer
+      name: Study Reference Organizer
+- id: design-ux
+  name: Design & UX
+  subcategories:
+  - id: ux-research
+    name: UX Research
+    items:
+    - id: usability-test-plan-generator
+      name: Usability Test Plan Generator
+    - id: interview-script-writer
+      name: Interview Script Writer
+    - id: survey-question-generator
+      name: Survey Question Generator
+    - id: research-findings-summarizer
+      name: Research Findings Summarizer
+  - id: ux-writing
+    name: UX Writing
+    items:
+    - id: button-text-generator
+      name: Button Text Generator
+    - id: empty-state-copy-generator
+      name: Empty State Copy Generator
+    - id: error-message-writer
+      name: Error Message Writer
+    - id: onboarding-text-generator
+      name: Onboarding Text Generator
+  - id: design-planning-accessibility
+    name: Design Planning & Accessibility
+    items:
+    - id: design-brief-generator
+      name: Design Brief Generator
+    - id: user-flow-description
+      name: User Flow Description
+    - id: wireframe-specification-writer
+      name: Wireframe Specification Writer
+    - id: design-review-checklist
+      name: Design Review Checklist
+    - id: alt-text-drafting-assistant
+      name: Alt Text Drafting Assistant
+    - id: accessible-copy-reviewer
+      name: Accessible Copy Reviewer
+    - id: keyboard-navigation-checklist
+      name: Keyboard Navigation Checklist
+    - id: plain-language-checker
+      name: Plain Language Checker
+- id: e-commerce
+  name: E-commerce
+  subcategories:
+  - id: product-listings
+    name: Product Listings
+    items:
+    - id: product-description-generator
+      name: Product Description Generator
+    - id: product-title-generator
+      name: Product Title Generator
+    - id: feature-to-benefit-converter
+      name: Feature-to-Benefit Converter
+    - id: product-specification-formatter
+      name: Product Specification Formatter
+    - id: category-description-writer
+      name: Category Description Writer
+  - id: merchandising
+    name: Merchandising
+    items:
+    - id: product-comparison-copy
+      name: Product Comparison Copy
+    - id: product-bundle-idea-generator
+      name: Product Bundle Idea Generator
+    - id: cross-sell-message-generator
+      name: Cross-Sell Message Generator
+    - id: promotional-calendar-planner
+      name: Promotional Calendar Planner
+  - id: store-operations
+    name: Store Operations
+    items:
+    - id: order-delay-message
+      name: Order Delay Message
+    - id: return-policy-explainer
+      name: Return Policy Explainer
+    - id: product-inquiry-reply
+      name: Product Inquiry Reply
+    - id: review-response-writer
+      name: Review Response Writer
+    - id: product-launch-checklist
+      name: Product Launch Checklist
+    - id: inventory-communication-template
+      name: Inventory Communication Template
+    - id: store-faq-generator
+      name: Store FAQ Generator
+- id: legal-administrative-documents
+  name: Legal & Administrative Documents
+  subcategories:
+  - id: business-documents
+    name: Business Documents
+    items:
+    - id: agreement-outline-generator
+      name: Agreement Outline Generator
+    - id: contract-clause-explainer
+      name: Contract Clause Explainer
+    - id: business-letter-writer
+      name: Business Letter Writer
+    - id: document-review-checklist
+      name: Document Review Checklist
+  - id: employment-documents
+    name: Employment Documents
+    items:
+    - id: employment-letter-draft
+      name: Employment Letter Draft
+    - id: experience-letter-request
+      name: Experience Letter Request
+    - id: offer-clarification-letter
+      name: Offer Clarification Letter
+    - id: resignation-letter
+      name: Resignation Letter
+  - id: administrative-documents
+    name: Administrative Documents
+    items:
+    - id: formal-request-letter
+      name: Formal Request Letter
+    - id: declaration-drafting-assistant
+      name: Declaration Drafting Assistant
+    - id: complaint-letter-writer
+      name: Complaint Letter Writer
+    - id: document-submission-cover-letter
+      name: Document Submission Cover Letter
+  - id: document-explanation
+    name: Document Explanation
+    items:
+    - id: plain-language-document-explainer
+      name: Plain Language Document Explainer
+    - id: clause-summary-generator
+      name: Clause Summary Generator
+    - id: obligation-checklist-generator
+      name: Obligation Checklist Generator
+- id: language-translation
+  name: Language & Translation
+  subcategories:
+  - id: translation
+    name: Translation
+    items:
+    - id: english-to-telugu-translator
+      name: English-to-Telugu Translator
+    - id: telugu-to-english-translator
+      name: Telugu-to-English Translator
+    - id: hindi-to-english-translator
+      name: Hindi-to-English Translator
+    - id: multilingual-text-translator
+      name: Multilingual Text Translator
+  - id: localization
+    name: Localization
+    items:
+    - id: localized-marketing-copy
+      name: Localized Marketing Copy
+    - id: cultural-tone-adaptation
+      name: Cultural Tone Adaptation
+    - id: regional-language-simplifier
+      name: Regional Language Simplifier
+    - id: localized-product-description
+      name: Localized Product Description
+  - id: language-review
+    name: Language Review
+    items:
+    - id: translation-reviewer
+      name: Translation Reviewer
+    - id: tone-consistency-checker
+      name: Tone Consistency Checker
+    - id: grammar-and-fluency-reviewer
+      name: Grammar and Fluency Reviewer
+    - id: terminology-consistency-assistant
+      name: Terminology Consistency Assistant
+- id: personal-development
+  name: Personal Development
+  subcategories:
+  - id: goals-habits
+    name: Goals & Habits
+    items:
+    - id: personal-goal-planner
+      name: Personal Goal Planner
+    - id: weekly-goal-planner
+      name: Weekly Goal Planner
+    - id: habit-plan-generator
+      name: Habit Plan Generator
+    - id: goal-breakdown-assistant
+      name: Goal Breakdown Assistant
+  - id: reflection
+    name: Reflection
+    items:
+    - id: daily-journal-prompts
+      name: Daily Journal Prompts
+    - id: weekly-reflection-questions
+      name: Weekly Reflection Questions
+    - id: achievement-tracker-template
+      name: Achievement Tracker Template
+    - id: personal-progress-review
+      name: Personal Progress Review
+  - id: decision-making
+    name: Decision-Making
+    items:
+    - id: decision-matrix-generator
+      name: Decision Matrix Generator
+    - id: pros-and-cons-assistant
+      name: Pros-and-Cons Assistant
+    - id: choice-comparison-worksheet
+      name: Choice Comparison Worksheet
+    - id: decision-journal-formatter
+      name: Decision Journal Formatter
+  - id: communication-skills
+    name: Communication Skills
+    items:
+    - id: confidence-practice-script
+      name: Confidence Practice Script
+    - id: difficult-conversation-planner
+      name: Difficult Conversation Planner
+    - id: assertive-communication-rewriter
+      name: Assertive Communication Rewriter
+- id: project-management
+  name: Project Management
+  subcategories:
+  - id: project-planning
+    name: Project Planning
+    items:
+    - id: project-plan-generator
+      name: Project Plan Generator
+    - id: task-breakdown-assistant
+      name: Task Breakdown Assistant
+    - id: milestone-planner
+      name: Milestone Planner
+    - id: dependency-checklist-generator
+      name: Dependency Checklist Generator
+  - id: project-tracking
+    name: Project Tracking
+    items:
+    - id: weekly-project-update-writer
+      name: Weekly Project Update Writer
+    - id: progress-summary-generator
+      name: Progress Summary Generator
+    - id: blocker-report-writer
+      name: Blocker Report Writer
+    - id: risk-register-drafting-assistant
+      name: Risk Register Drafting Assistant
+  - id: meetings-delivery
+    name: Meetings & Delivery
+    items:
+    - id: stand-up-update-generator
+      name: Stand-up Update Generator
+    - id: sprint-planning-template
+      name: Sprint Planning Template
+    - id: retrospective-question-generator
+      name: Retrospective Question Generator
+    - id: action-item-formatter
+      name: Action Item Formatter
+    - id: release-checklist-generator
+      name: Release Checklist Generator
+    - id: project-handover-document
+      name: Project Handover Document
+    - id: lessons-learned-report
+      name: Lessons Learned Report
+- id: real-estate
+  name: Real Estate
+  subcategories:
+  - id: property-listings
+    name: Property Listings
+    items:
+    - id: property-description-generator
+      name: Property Description Generator
+    - id: rental-listing-writer
+      name: Rental Listing Writer
+    - id: property-feature-summarizer
+      name: Property Feature Summarizer
+    - id: listing-title-generator
+      name: Listing Title Generator
+  - id: tenant-communication
+    name: Tenant Communication
+    items:
+    - id: tenant-message-writer
+      name: Tenant Message Writer
+    - id: rental-inquiry-reply
+      name: Rental Inquiry Reply
+    - id: viewing-appointment-message
+      name: Viewing Appointment Message
+    - id: maintenance-request-writer
+      name: Maintenance Request Writer
+  - id: property-planning
+    name: Property Planning
+    items:
+    - id: property-viewing-checklist
+      name: Property Viewing Checklist
+    - id: property-comparison-worksheet
+      name: Property Comparison Worksheet
+    - id: rental-move-in-checklist
+      name: Rental Move-In Checklist
+    - id: property-maintenance-plan
+      name: Property Maintenance Plan
+  - id: real-estate-marketing
+    name: Real Estate Marketing
+    items:
+    - id: agent-introduction-writer
+      name: Agent Introduction Writer
+    - id: property-marketing-plan
+      name: Property Marketing Plan
+    - id: client-follow-up-message
+      name: Client Follow-up Message
+    - id: real-estate-social-media-caption
+      name: Real Estate Social Media Caption
+- id: teaching-training
+  name: Teaching & Training
+  subcategories:
+  - id: teaching
+    name: Teaching
+    items:
+    - id: lesson-plan-generator
+      name: Lesson Plan Generator
+    - id: learning-objective-writer
+      name: Learning Objective Writer
+    - id: classroom-activity-generator
+      name: Classroom Activity Generator
+    - id: teaching-notes-assistant
+      name: Teaching Notes Assistant
+  - id: assessments
+    name: Assessments
+    items:
+    - id: quiz-generator
+      name: Quiz Generator
+    - id: question-paper-drafting-assistant
+      name: Question Paper Drafting Assistant
+    - id: rubric-generator
+      name: Rubric Generator
+    - id: answer-key-drafting-assistant
+      name: Answer Key Drafting Assistant
+  - id: training
+    name: Training
+    items:
+    - id: employee-training-plan
+      name: Employee Training Plan
+    - id: technical-workshop-outline
+      name: Technical Workshop Outline
+    - id: training-exercise-generator
+      name: Training Exercise Generator
+    - id: training-feedback-questionnaire
+      name: Training Feedback Questionnaire
+  - id: educational-content
+    name: Educational Content
+    items:
+    - id: simple-topic-explainer
+      name: Simple Topic Explainer
+    - id: worksheet-generator
+      name: Worksheet Generator
+    - id: case-study-generator
+      name: Case Study Generator
+    - id: learning-outcome-assessment-planner
+      name: Learning Outcome Assessment Planner
+- id: travel-event-planning
+  name: Travel & Event Planning
+  subcategories:
+  - id: travel-planning
+    name: Travel Planning
+    items:
+    - id: trip-itinerary-generator
+      name: Trip Itinerary Generator
+      sub_items:
+      - id: one-day-itinerary
+        name: One-Day Itinerary
+      - id: weekend-itinerary
+        name: Weekend Itinerary
+      - id: multi-day-itinerary
+        name: Multi-Day Itinerary
+    - id: packing-list-generator
+      name: Packing List Generator
+    - id: travel-budget-planner
+      name: Travel Budget Planner
+    - id: destination-comparison-worksheet
+      name: Destination Comparison Worksheet
+    - id: daily-activity-planner
+      name: Daily Activity Planner
+    - id: group-trip-coordination-message
+      name: Group Trip Coordination Message
+    - id: travel-checklist-generator
+      name: Travel Checklist Generator
+    - id: travel-journal-prompts
+      name: Travel Journal Prompts
+  - id: event-planning
+    name: Event Planning
+    items:
+    - id: event-planning-checklist
+      name: Event Planning Checklist
+    - id: event-invitation-writer
+      name: Event Invitation Writer
+    - id: event-agenda-generator
+      name: Event Agenda Generator
+    - id: post-event-thank-you-message
+      name: Post-Event Thank-you Message
+  - id: business-events
+    name: Business Events
+    items:
+    - id: conference-introduction-writer
+      name: Conference Introduction Writer
+    - id: speaker-bio-generator
+      name: Speaker Bio Generator
+    - id: workshop-agenda-builder
+      name: Workshop Agenda Builder
+    - id: networking-follow-up-message
+      name: Networking Follow-up Message
+- id: small-business-local-business
+  name: Small Business & Local Business
+  subcategories:
+  - id: local-marketing
+    name: Local Marketing
+    items:
+    - id: shop-promotion-writer
+      name: Shop Promotion Writer
+    - id: local-business-bio
+      name: Local Business Bio
+    - id: festival-offer-message
+      name: Festival Offer Message
+    - id: customer-announcement-writer
+      name: Customer Announcement Writer
+  - id: business-operations
+    name: Business Operations
+    items:
+    - id: daily-opening-checklist
+      name: Daily Opening Checklist
+    - id: closing-checklist
+      name: Closing Checklist
+    - id: customer-complaint-response
+      name: Customer Complaint Response
+    - id: staff-duty-checklist
+      name: Staff Duty Checklist
+    - id: supplier-email-writer
+      name: Supplier Email Writer
+    - id: customer-payment-reminder
+      name: Customer Payment Reminder
+    - id: order-confirmation-message
+      name: Order Confirmation Message
+    - id: service-delay-notification
+      name: Service Delay Notification
+  - id: business-growth
+    name: Business Growth
+    items:
+    - id: customer-feedback-questionnaire
+      name: Customer Feedback Questionnaire
+    - id: referral-program-draft
+      name: Referral Program Draft
+    - id: loyalty-program-ideas
+      name: Loyalty Program Ideas
+    - id: local-business-marketing-plan
+      name: Local Business Marketing Plan
+- id: agriculture-rural-business
+  name: Agriculture & Rural Business
+  subcategories:
+  - id: agricultural-business-planning
+    name: Agricultural Business Planning
+    items:
+    - id: small-farm-business-plan
+      name: Small Farm Business Plan
+    - id: agricultural-business-idea-generator
+      name: Agricultural Business Idea Generator
+    - id: farm-expense-tracking-template
+      name: Farm Expense Tracking Template
+    - id: produce-sales-plan
+      name: Produce Sales Plan
+  - id: agriculture-business-communication
+    name: Agriculture Business Communication
+    items:
+    - id: customer-order-message
+      name: Customer Order Message
+    - id: supplier-inquiry-writer
+      name: Supplier Inquiry Writer
+    - id: produce-listing-description
+      name: Produce Listing Description
+    - id: business-promotion-message
+      name: Business Promotion Message
+  - id: agricultural-learning
+    name: Agricultural Learning
+    items:
+    - id: agricultural-terminology-explainer
+      name: Agricultural Terminology Explainer
+    - id: farming-topic-study-guide
+      name: Farming Topic Study Guide
+    - id: rural-business-planning-assistant
+      name: Rural Business Planning Assistant
+  - id: farm-administration
+    name: Farm Administration
+    items:
+    - id: record-keeping-template
+      name: Record-Keeping Template
+    - id: purchase-checklist
+      name: Purchase Checklist
+    - id: sales-record-formatter
+      name: Sales Record Formatter
+    - id: seasonal-planning-worksheet
+      name: Seasonal Planning Worksheet
+- id: accessibility-simplification
+  name: Accessibility & Simplification
+  subcategories:
+  - id: reading-simplification
+    name: Reading Simplification
+    items:
+    - id: plain-english-converter
+      name: Plain English Converter
+    - id: difficult-document-simplifier
+      name: Difficult Document Simplifier
+    - id: long-message-simplifier
+      name: Long Message Simplifier
+    - id: technical-text-explainer
+      name: Technical Text Explainer
+  - id: accessible-content
+    name: Accessible Content
+    items:
+    - id: image-alt-text-drafting-assistant
+      name: Image Alt Text Drafting Assistant
+    - id: clear-instruction-generator
+      name: Clear Instruction Generator
+    - id: accessible-form-copy-reviewer
+      name: Accessible Form Copy Reviewer
+    - id: readability-reviewer
+      name: Readability Reviewer
+  - id: communication-simplification
+    name: Communication Simplification
+    items:
+    - id: step-by-step-instruction-writer
+      name: Step-by-Step Instruction Writer
+    - id: easy-to-read-announcement
+      name: Easy-to-Read Announcement
+    - id: short-message-summarizer
+      name: Short Message Summarizer
+    - id: jargon-remover
+      name: Jargon Remover
+  - id: learning-support
+    name: Learning Support
+    items:
+    - id: beginner-explanation-generator
+      name: Beginner Explanation Generator
+    - id: glossary-generator
+      name: Glossary Generator
+    - id: concept-breakdown-assistant
+      name: Concept Breakdown Assistant
+    - id: example-based-explainer
+      name: Example-Based Explainer
+- id: everyday-life
+  name: Everyday Life
+  subcategories:
+  - id: personal-organization
+    name: Personal Organization
+    items:
+    - id: daily-schedule-planner
+      name: Daily Schedule Planner
+    - id: weekly-planner
+      name: Weekly Planner
+    - id: to-do-list-organizer
+      name: To-Do List Organizer
+    - id: household-checklist-generator
+      name: Household Checklist Generator
+  - id: food-planning
+    name: Food Planning
+    items:
+    - id: meal-plan-drafting-assistant
+      name: Meal Plan Drafting Assistant
+      sub_items:
+      - id: weekly-meal-plan
+        name: Weekly Meal Plan
+      - id: budget-meal-plan
+        name: Budget Meal Plan
+      - id: ingredient-based-plan
+        name: Ingredient-Based Plan
+    - id: grocery-list-generator
+      name: Grocery List Generator
+    - id: recipe-ingredient-substitution-ideas
+      name: Recipe Ingredient Substitution Ideas
+    - id: weekly-meal-preparation-planner
+      name: Weekly Meal Preparation Planner
+  - id: personal-messages
+    name: Personal Messages
+    items:
+    - id: invitation-writer
+      name: Invitation Writer
+    - id: polite-request-generator
+      name: Polite Request Generator
+    - id: thank-you-message-writer
+      name: Thank-you Message Writer
+    - id: apology-message-generator
+      name: Apology Message Generator
+  - id: everyday-decisions
+    name: Everyday Decisions
+    items:
+    - id: purchase-comparison-worksheet
+      name: Purchase Comparison Worksheet
+    - id: moving-checklist
+      name: Moving Checklist
+    - id: personal-budget-template
+      name: Personal Budget Template
+    - id: household-task-planner
+      name: Household Task Planner
+- id: ai-workflow-automation
+  name: AI Workflow Automation
+  subcategories:
+  - id: text-processing
+    name: Text Processing
+    items:
+    - id: text-classification-prompt-builder
+      name: Text Classification Prompt Builder
+    - id: entity-extraction-prompt-builder
+      name: Entity Extraction Prompt Builder
+    - id: text-to-json-converter
+      name: Text-to-JSON Converter
+    - id: structured-data-extraction-planner
+      name: Structured Data Extraction Planner
+  - id: content-workflows
+    name: Content Workflows
+    items:
+    - id: blog-to-social-workflow-planner
+      name: Blog-to-Social Workflow Planner
+    - id: resume-to-cover-letter-workflow
+      name: Resume-to-Cover-Letter Workflow
+    - id: notes-to-report-workflow
+      name: Notes-to-Report Workflow
+    - id: meeting-to-action-items-workflow
+      name: Meeting-to-Action-Items Workflow
+  - id: business-workflows
+    name: Business Workflows
+    items:
+    - id: lead-qualification-workflow-planner
+      name: Lead Qualification Workflow Planner
+    - id: customer-ticket-classification-planner
+      name: Customer Ticket Classification Planner
+    - id: document-summarization-workflow
+      name: Document Summarization Workflow
+  - id: agent-design
+    name: Agent Design
+    items:
+    - id: ai-agent-role-designer
+      name: AI Agent Role Designer
+    - id: agent-system-prompt-generator
+      name: Agent System Prompt Generator
+    - id: tool-schema-generator
+      name: Tool Schema Generator
+    - id: multi-step-workflow-designer
+      name: Multi-Step Workflow Designer
+  - id: ai-workflow-quality-assurance
+    name: AI Workflow Quality Assurance
+    items:
+    - id: prompt-regression-test-generator
+      name: Prompt Regression Test Generator
+    - id: ai-output-checklist
+      name: AI Output Checklist
+    - id: evaluation-dataset-planner
+      name: Evaluation Dataset Planner
+    - id: ai-workflow-failure-checklist
+      name: AI Workflow Failure Checklist
