@@ -1,20 +1,30 @@
 import hmac
+import hashlib
+import json
+import logging
+import math
 import os
-import secrets
+import re
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from typing import Any, AsyncIterator
 from urllib.parse import urlencode
 
 import httpx
-from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
+from alembic import command
+from alembic.config import Config
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+from fastapi.exceptions import RequestValidationError
 from google.auth.transport.requests import Request as GoogleRequest
 from google.oauth2 import id_token
 from jose import JWTError, jwt
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.responses import JSONResponse
 
 from app.catalogue import (
     get_catalogue,
@@ -24,7 +34,8 @@ from app.catalogue import (
     list_subcategories,
 )
 from app.database import Base, engine, get_db
-from app.models import AISettings, Execution, User
+from app.models import AISettings, Execution, ExecutionAttempt, User
+from app.request_guard import RequestGuard
 from app.schemas import (
     ExecutionRequest,
     ExecutionResponse,
@@ -38,19 +49,40 @@ from app.security import (
     decrypt_api_key,
     encrypt_api_key,
     get_current_user,
+    create_oauth_values,
+    secure_cookie,
     session_cookie_name,
+    validate_security_configuration,
 )
 from app.services.openrouter import OpenRouterError, generate
+
+
+logger = logging.getLogger("aitoolnity.api")
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     get_catalogue()
-    Base.metadata.create_all(bind=engine)
+    validate_security_configuration()
+    migration_config = Config(str(os.path.join(os.path.dirname(__file__), "..", "alembic.ini")))
+    migration_config.set_main_option(
+        "sqlalchemy.url",
+        engine.url.render_as_string(hide_password=False).replace("%", "%%"),
+    )
+    command.upgrade(migration_config, "head")
     yield
 
 
-app = FastAPI(title="AIToolnity API", version="1.0.0", lifespan=lifespan)
+production = os.getenv("APP_ENV", "development") == "production"
+app = FastAPI(
+    title="AIToolnity API",
+    version="1.0.0",
+    lifespan=lifespan,
+    debug=False,
+    docs_url=None if production else "/docs",
+    redoc_url=None if production else "/redoc",
+    openapi_url=None if production else "/openapi.json",
+)
 allowed_origins = [
     origin.strip()
     for origin in os.getenv("FRONTEND_ORIGINS", "http://localhost:3000").split(",")
@@ -61,13 +93,55 @@ app.add_middleware(
     allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "Idempotency-Key"],
 )
+app.add_middleware(RequestGuard, allowed_origins=allowed_origins)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(
+    _: Request, error: RequestValidationError
+) -> JSONResponse:
+    errors = [
+        {
+            "location": [str(part) for part in item.get("loc", ())],
+            "message": item.get("msg", "Invalid request."),
+            "type": item.get("type", "validation_error"),
+        }
+        for item in error.errors()
+    ]
+    return JSONResponse(status_code=422, content={"detail": errors})
+
+
+@app.exception_handler(SQLAlchemyError)
+async def database_error_handler(_: Request, __: SQLAlchemyError) -> JSONResponse:
+    logger.warning("Database request failed.")
+    return JSONResponse(
+        status_code=503,
+        content={"detail": "A database operation failed. Try again shortly."},
+    )
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_error_handler(_: Request, error: StarletteHTTPException) -> JSONResponse:
+    detail = error.detail
+    if not isinstance(detail, (str, list, dict)):
+        detail = "The request could not be completed."
+    return JSONResponse(
+        status_code=error.status_code,
+        content={"detail": detail},
+        headers=error.headers,
+    )
 
 
 @app.get("/api/health")
 def health(db: Session = Depends(get_db)) -> dict[str, str]:
     db.execute(select(1))
+    return {"status": "ok"}
+
+
+@app.get("/api/live")
+def liveness() -> dict[str, str]:
     return {"status": "ok"}
 
 
@@ -109,7 +183,7 @@ def google_login_start() -> RedirectResponse:
         raise HTTPException(
             status_code=503, detail="Google Login is not configured for this application."
         )
-    state = secrets.token_urlsafe(32)
+    state, verifier, challenge, nonce = create_oauth_values()
     redirect_uri = os.getenv(
         "GOOGLE_REDIRECT_URI", "http://localhost:8000/api/auth/google/callback"
     )
@@ -119,6 +193,9 @@ def google_login_start() -> RedirectResponse:
         "response_type": "code",
         "scope": "openid email profile",
         "state": state,
+        "nonce": nonce,
+        "code_challenge": challenge,
+        "code_challenge_method": "S256",
         "prompt": "select_account",
     }
     redirect = RedirectResponse(
@@ -128,7 +205,23 @@ def google_login_start() -> RedirectResponse:
         "aitoolnity_oauth_state",
         state,
         httponly=True,
-        secure=os.getenv("COOKIE_SECURE", "false").lower() == "true",
+        secure=secure_cookie(),
+        samesite="lax",
+        max_age=300,
+    )
+    redirect.set_cookie(
+        "aitoolnity_oauth_verifier",
+        verifier,
+        httponly=True,
+        secure=secure_cookie(),
+        samesite="lax",
+        max_age=300,
+    )
+    redirect.set_cookie(
+        "aitoolnity_oauth_nonce",
+        nonce,
+        httponly=True,
+        secure=secure_cookie(),
         samesite="lax",
         max_age=300,
     )
@@ -145,9 +238,22 @@ async def google_login_callback(
 ) -> RedirectResponse:
     frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000").rstrip("/")
     if error:
-        return RedirectResponse(f"{frontend_url}/?auth_error=google_login_cancelled")
+        response = RedirectResponse(f"{frontend_url}/?auth_error=google_login_cancelled")
+        response.delete_cookie("aitoolnity_oauth_state", path="/")
+        response.delete_cookie("aitoolnity_oauth_verifier", path="/")
+        response.delete_cookie("aitoolnity_oauth_nonce", path="/")
+        return response
     expected_state = request.cookies.get("aitoolnity_oauth_state")
-    if not code or not state or not expected_state or not hmac.compare_digest(state, expected_state):
+    verifier = request.cookies.get("aitoolnity_oauth_verifier")
+    nonce = request.cookies.get("aitoolnity_oauth_nonce")
+    if (
+        not code
+        or not state
+        or not expected_state
+        or not verifier
+        or not nonce
+        or not hmac.compare_digest(state, expected_state)
+    ):
         raise HTTPException(status_code=400, detail="Google Login state validation failed.")
 
     client_id = os.getenv("GOOGLE_CLIENT_ID")
@@ -168,6 +274,7 @@ async def google_login_callback(
                     "client_secret": client_secret,
                     "redirect_uri": redirect_uri,
                     "grant_type": "authorization_code",
+                    "code_verifier": verifier,
                 },
             )
     except httpx.RequestError as error:
@@ -191,6 +298,9 @@ async def google_login_callback(
         )
     except (ValueError, JWTError) as error:
         raise HTTPException(status_code=401, detail="Google identity validation failed.") from error
+    token_nonce = claims.get("nonce")
+    if not isinstance(token_nonce, str) or not hmac.compare_digest(token_nonce, nonce):
+        raise HTTPException(status_code=401, detail="Google identity validation failed.")
 
     google_sub = claims.get("sub")
     email = claims.get("email")
@@ -214,12 +324,14 @@ async def google_login_callback(
         db.commit()
         db.refresh(user)
     response = RedirectResponse(f"{frontend_url}/")
-    response.delete_cookie("aitoolnity_oauth_state")
+    response.delete_cookie("aitoolnity_oauth_state", path="/")
+    response.delete_cookie("aitoolnity_oauth_verifier", path="/")
+    response.delete_cookie("aitoolnity_oauth_nonce", path="/")
     response.set_cookie(
         session_cookie_name(),
         create_access_token(user.id),
         httponly=True,
-        secure=os.getenv("COOKIE_SECURE", "false").lower() == "true",
+        secure=secure_cookie(),
         samesite="lax",
         max_age=7 * 24 * 60 * 60,
         path="/",
@@ -256,7 +368,7 @@ def logout(response: Response) -> dict[str, str]:
     response.delete_cookie(
         session_cookie_name(),
         path="/",
-        secure=os.getenv("COOKIE_SECURE", "false").lower() == "true",
+        secure=secure_cookie(),
         httponly=True,
         samesite="lax",
     )
@@ -294,12 +406,9 @@ def update_settings(
     user: User = Depends(get_current_user),
 ) -> SettingsResponse:
     settings = _user_settings(db, user.id)
-    settings.model = body.model.strip()
+    settings.model = body.model
     if body.api_key is not None:
-        key = body.api_key.strip()
-        if not key:
-            raise HTTPException(status_code=422, detail="API key must not be blank.")
-        settings.encrypted_api_key = encrypt_api_key(key)
+        settings.encrypted_api_key = encrypt_api_key(body.api_key)
     db.commit()
     db.refresh(settings)
     return _response_settings(settings)
@@ -321,12 +430,9 @@ async def _api_key_for_user(db: Session, user: User) -> tuple[str, str]:
     settings = _user_settings(db, user.id)
     if settings.encrypted_api_key:
         return decrypt_api_key(settings.encrypted_api_key), settings.model
-    server_key = os.getenv("OPENROUTER_API_KEY")
-    if server_key:
-        return server_key, settings.model
     raise HTTPException(
         status_code=400,
-        detail="Add an OpenRouter API key in AI settings or configure OPENROUTER_API_KEY.",
+        detail="Add your OpenRouter API key in AI settings before generating a result.",
     )
 
 
@@ -360,7 +466,7 @@ def _validate_inputs(tool: dict[str, Any], inputs: dict[str, Any]) -> str:
     lines: list[str] = []
     for field in fields:
         value = inputs.get(field["name"])
-        if value is None or value == "":
+        if value is None or value == "" or (isinstance(value, str) and not value.strip()):
             if field["required"]:
                 raise HTTPException(
                     status_code=422, detail=f"{field['label']} is required."
@@ -379,6 +485,11 @@ def _validate_inputs(tool: dict[str, Any], inputs: dict[str, Any]) -> str:
                 raise HTTPException(
                     status_code=422, detail=f"{field['label']} exceeds its maximum."
                 )
+            if not math.isfinite(value):
+                raise HTTPException(
+                    status_code=422,
+                    detail=f"{field['label']} must be a finite number.",
+                )
         elif not isinstance(value, str):
             raise HTTPException(
                 status_code=422, detail=f"{field['label']} must be text."
@@ -387,11 +498,13 @@ def _validate_inputs(tool: dict[str, Any], inputs: dict[str, Any]) -> str:
             raise HTTPException(
                 status_code=422, detail=f"Choose a valid option for {field['label']}."
             )
-        elif field["type"] == "email" and "@" not in value:
+        elif field["type"] == "email" and not re.fullmatch(
+            r"[^@\s]+@[^@\s]+\.[^@\s]+", value
+        ):
             raise HTTPException(
                 status_code=422, detail=f"{field['label']} must be a valid email address."
             )
-        elif field["type"] == "url" and not value.startswith(("https://", "http://")):
+        elif field["type"] == "url" and not _valid_url(value):
             raise HTTPException(
                 status_code=422, detail=f"{field['label']} must start with http:// or https://."
             )
@@ -400,12 +513,23 @@ def _validate_inputs(tool: dict[str, Any], inputs: dict[str, Any]) -> str:
                 raise HTTPException(
                     status_code=422, detail=f"{field['label']} is too short."
                 )
-            if field["max_length"] is not None and len(value) > field["max_length"]:
+            maximum_length = field["max_length"] or 20_000
+            if len(value) > maximum_length:
                 raise HTTPException(
                     status_code=422, detail=f"{field['label']} is too long."
                 )
         lines.append(f"{field['label']}:\n{value}")
     return "\n\n".join(lines)
+
+
+def _valid_url(value: str) -> bool:
+    from urllib.parse import urlsplit
+
+    try:
+        parsed = urlsplit(value)
+        return parsed.scheme in {"http", "https"} and bool(parsed.hostname)
+    except ValueError:
+        return False
 
 
 def _tone(tool: dict[str, Any], tone_id: str) -> dict[str, str]:
@@ -437,6 +561,7 @@ async def _save_execution(
     parent_id: int | None = None,
     refinement: str | None = None,
     previous_result: str | None = None,
+    request_key: str,
 ) -> ExecutionResponse:
     user_prompt = _validate_inputs(tool, input_data)
     selected_tone = _tone(tool, tone_id)
@@ -447,34 +572,118 @@ async def _save_execution(
             + "\n\nRefinement instructions:\n"
             + refinement
         )
-    api_key, model = await _api_key_for_user(db, user)
-    result = await _call_provider(
-        api_key=api_key,
-        model=model,
-        system_prompt=(
-            f"{tool['system_prompt']}\n\n"
-            f"Requested tone: {selected_tone['name']}. {selected_tone['instructions']}"
-        ),
-        user_prompt=user_prompt,
-    )
-    execution = Execution(
+    request_hash = hashlib.sha256(
+        json.dumps(
+            {
+                "tool_id": tool["id"],
+                "inputs": input_data,
+                "tone": tone_id,
+                "parent_id": parent_id,
+                "refinement": refinement,
+                "previous_result": previous_result,
+            },
+            sort_keys=True,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    attempt = ExecutionAttempt(
         user_id=user.id,
-        parent_id=parent_id,
-        tool_id=tool["id"],
-        input_data=input_data,
-        result=result,
-        model=model,
-        tone=tone_id,
+        request_key=request_key,
+        request_hash=request_hash,
+        status="pending",
     )
-    db.add(execution)
-    db.commit()
-    db.refresh(execution)
-    return _execution_response(execution)
+    db.add(attempt)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        existing_attempt = db.scalar(
+            select(ExecutionAttempt).where(
+                ExecutionAttempt.user_id == user.id,
+                ExecutionAttempt.request_key == request_key,
+            )
+        )
+        if (
+            existing_attempt
+            and existing_attempt.request_hash != request_hash
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail="This request key has already been used for different input.",
+            )
+        if (
+            existing_attempt
+            and existing_attempt.status == "complete"
+            and existing_attempt.execution_id
+        ):
+            existing_execution = db.get(Execution, existing_attempt.execution_id)
+            if existing_execution is not None:
+                return _execution_response(existing_execution)
+        raise HTTPException(
+            status_code=409,
+            detail="This request is already being processed. Wait before retrying.",
+        )
+
+    try:
+        api_key, model = await _api_key_for_user(db, user)
+        result = await _call_provider(
+            api_key=api_key,
+            model=model,
+            system_prompt=(
+                f"{tool['system_prompt']}\n\n"
+                f"Requested tone: {selected_tone['name']}. {selected_tone['instructions']}"
+            ),
+            user_prompt=user_prompt,
+        )
+        execution = Execution(
+            user_id=user.id,
+            parent_id=parent_id,
+            tool_id=tool["id"],
+            input_data=input_data,
+            result=result,
+            model=model,
+            tone=tone_id,
+        )
+        db.add(execution)
+        db.flush()
+        attempt.status = "complete"
+        attempt.execution_id = execution.id
+        db.commit()
+        db.refresh(execution)
+        return _execution_response(execution)
+    except HTTPException:
+        db.rollback()
+        _discard_attempt(db, user.id, request_key)
+        raise
+    except SQLAlchemyError as error:
+        db.rollback()
+        _discard_attempt(db, user.id, request_key)
+        logger.warning("Could not persist an AI execution.")
+        raise HTTPException(
+            status_code=503,
+            detail="The result could not be saved. Check your history before retrying.",
+        ) from error
+
+
+def _discard_attempt(db: Session, user_id: int, request_key: str) -> None:
+    attempt = db.scalar(
+        select(ExecutionAttempt).where(
+            ExecutionAttempt.user_id == user_id,
+            ExecutionAttempt.request_key == request_key,
+        )
+    )
+    if attempt is not None:
+        db.delete(attempt)
+        db.commit()
 
 
 @app.post("/api/executions", response_model=ExecutionResponse)
 async def execute_tool(
     body: ExecutionRequest,
+    idempotency_key: str = Header(
+        alias="Idempotency-Key", min_length=16, max_length=64
+    ),
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> ExecutionResponse:
@@ -487,6 +696,7 @@ async def execute_tool(
         tool=tool,
         input_data=body.inputs,
         tone_id=body.tone,
+        request_key=idempotency_key,
     )
 
 
@@ -504,6 +714,9 @@ def _owned_execution(db: Session, user_id: int, execution_id: int) -> Execution:
 @app.post("/api/executions/{execution_id}/regenerate", response_model=ExecutionResponse)
 async def regenerate_result(
     execution_id: int,
+    idempotency_key: str = Header(
+        alias="Idempotency-Key", min_length=16, max_length=64
+    ),
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> ExecutionResponse:
@@ -518,6 +731,7 @@ async def regenerate_result(
         input_data=original.input_data,
         tone_id=original.tone,
         parent_id=original.id,
+        request_key=idempotency_key,
     )
 
 
@@ -525,6 +739,9 @@ async def regenerate_result(
 async def refine_result(
     execution_id: int,
     body: RefinementRequest,
+    idempotency_key: str = Header(
+        alias="Idempotency-Key", min_length=16, max_length=64
+    ),
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> ExecutionResponse:
@@ -544,6 +761,7 @@ async def refine_result(
         parent_id=original.id,
         refinement=body.instructions.strip(),
         previous_result=original.result,
+        request_key=idempotency_key,
     )
 
 

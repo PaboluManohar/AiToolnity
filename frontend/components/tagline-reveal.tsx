@@ -52,7 +52,7 @@ export function TaglineReveal() {
     >
       <p className="heading-2 max-w-3xl text-white">
         {lines.map((line, lineIndex) => (
-          <span className="block" key={lineIndex}>
+          <span className="block" key={line.join(" ")}>
             {line.map((word, wordIndex) => {
               const index =
                 lines.slice(0, lineIndex).reduce((count, row) => count + row.length, 0) +

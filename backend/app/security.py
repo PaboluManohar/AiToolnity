@@ -1,4 +1,7 @@
 import os
+import base64
+import hashlib
+import secrets
 from datetime import datetime, timedelta, timezone
 
 from cryptography.fernet import Fernet, InvalidToken
@@ -29,6 +32,32 @@ def create_access_token(user_id: int) -> str:
         _secret_key(),
         algorithm=_ALGORITHM,
     )
+
+
+def create_oauth_values() -> tuple[str, str, str, str]:
+    state = secrets.token_urlsafe(32)
+    verifier = secrets.token_urlsafe(64)
+    challenge = base64.urlsafe_b64encode(
+        hashlib.sha256(verifier.encode("ascii")).digest()
+    ).rstrip(b"=").decode("ascii")
+    nonce = secrets.token_urlsafe(32)
+    return state, verifier, challenge, nonce
+
+
+def secure_cookie() -> bool:
+    default = "true" if os.getenv("APP_ENV", "development") == "production" else "false"
+    return os.getenv("COOKIE_SECURE", default).lower() == "true"
+
+
+def validate_security_configuration() -> None:
+    secret = os.getenv("APP_SECRET_KEY")
+    if not secret or len(secret) < 32:
+        raise RuntimeError("APP_SECRET_KEY must contain at least 32 characters.")
+    _fernet()
+    if os.getenv("APP_ENV", "development") == "production" and not secure_cookie():
+        raise RuntimeError("COOKIE_SECURE must be true when APP_ENV is production.")
+    if bool(os.getenv("GOOGLE_CLIENT_ID")) != bool(os.getenv("GOOGLE_CLIENT_SECRET")):
+        raise RuntimeError("Configure both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.")
 
 
 def get_current_user(

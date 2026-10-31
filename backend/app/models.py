@@ -1,6 +1,17 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, JSON, String, Text, func
+from sqlalchemy import (
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    Integer,
+    JSON,
+    String,
+    Text,
+    UniqueConstraint,
+    text,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -36,6 +47,9 @@ class AISettings(Base):
 
 class Execution(Base):
     __tablename__ = "executions"
+    __table_args__ = (
+        CheckConstraint("length(result) > 0", name="ck_execution_result_not_empty"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
@@ -48,3 +62,23 @@ class Execution(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     user: Mapped[User] = relationship(back_populates="executions")
+
+
+class ExecutionAttempt(Base):
+    __tablename__ = "execution_attempts"
+    __table_args__ = (
+        UniqueConstraint("user_id", "request_key", name="uq_attempt_user_request_key"),
+        CheckConstraint(
+            "status IN ('pending', 'complete')", name="ck_attempt_status"
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    request_key: Mapped[str] = mapped_column(String(64))
+    request_hash: Mapped[str] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(16), server_default=text("'pending'"))
+    execution_id: Mapped[int | None] = mapped_column(
+        ForeignKey("executions.id", ondelete="CASCADE"), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

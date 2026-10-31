@@ -173,8 +173,8 @@ export default function SettingsPage() {
                 value={apiKey}
               />
               <p className="caption-2 text-ink/55">
-                Leave this blank to keep your current key or use the server
-                configured key.
+                Leave this blank to keep your current key. A personal key is
+                required to generate results.
               </p>
             </div>
             <button

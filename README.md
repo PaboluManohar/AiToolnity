@@ -8,7 +8,7 @@ AIToolnity is a YAML driven catalogue for discovering and running AI tools. The 
 
 Requirements: Docker with the Compose plugin.
 
-1. Copy `.env.example` to `.env`.
+1. Run `make setup` to create `.env` from `.env.example`. The target never overwrites an existing `.env`.
 2. Set `POSTGRES_PASSWORD` to a local development password. Generate the application and encryption secrets:
 
    ```sh
@@ -21,12 +21,14 @@ Requirements: Docker with the Compose plugin.
 4. Start the application:
 
    ```sh
-   docker compose up --build
+   make devrun
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000). The API health check is at [http://localhost:8000/api/health](http://localhost:8000/api/health), and FastAPI's API documentation is at [http://localhost:8000/docs](http://localhost:8000/docs).
 
-Stop the services with `docker compose down`. Add `--volumes` only if you intend to delete the local PostgreSQL data.
+Stop the services with `make stop`. This stops containers without deleting PostgreSQL data. Do not add `--volumes` unless you deliberately intend to delete that data.
+
+Use `make run` to start the application in the background, `make logs` to follow logs, and `make stop` to stop it. Run `make prerequisites` to check local tooling. `make install` installs frontend dependencies; `make build` builds the Compose images.
 
 For Google Login, create a Google OAuth web client and add this exact authorized redirect URI:
 
@@ -36,7 +38,7 @@ http://localhost:8000/api/auth/google/callback
 
 Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`, then restart the services. The login endpoint returns a clear configuration error until credentials are provided. For an HTTPS deployment, set `COOKIE_SECURE=true` and replace every local secret and database password.
 
-To run generation, either set `OPENROUTER_API_KEY` in `.env` or sign in and save a personal key in AI settings. The default model is `openrouter/free`. Users can choose another OpenRouter model. Failed requests report an error and never silently switch to a paid model.
+To run generation, sign in and save a personal OpenRouter API key in AI settings. Keys are encrypted with the server's `ENCRYPTION_KEY` before being stored. The default model is `openrouter/free`. Users can choose another OpenRouter model. A server wide provider key is not used as a fallback. Failed requests report an error and never switch models.
 
 ## Run the services without Docker
 
@@ -145,20 +147,34 @@ All settings and history queries are scoped to the signed in user. Provider keys
 
 ## Tests
 
-Run the backend tests with:
+Run all frontend and backend tests with:
 
 ```sh
-cd backend
-python3 -m pytest
+make test
 ```
 
-The tests cover catalogue validation and discovery, dynamic form configuration, and private history ownership. OpenRouter generation and Google OAuth require valid external credentials and are not claimed as live tested when those credentials are unavailable.
+The backend tests run against an isolated SQLite database by default and cover catalogue validation and discovery, dynamic form configuration, execution idempotency, provider failures, and private history ownership. OpenRouter generation and Google OAuth require valid external credentials and are not claimed as live tested when those credentials are unavailable.
 
-Run the frontend type check and production build with:
+Run frontend lint and type checking with:
 
 ```sh
-cd frontend
-npm install
-npx tsc --noEmit
-npm run build
+make lint
+make typecheck
 ```
+
+`make build` builds the production images. Migrations run at backend startup; `make migrate` can apply them explicitly while the database is running.
+
+## Database backups
+
+Keep PostgreSQL backups outside the container and test restoration before relying on them:
+
+```sh
+make db-backup
+make db-restore BACKUP=backups/aitoolnity-YYYYMMDD-HHMMSS.dump CONFIRM_RESTORE=YES
+```
+
+Restore replaces database objects. Verify the selected backup and confirm explicitly before running the restore target. Store `.env` and backups securely. Changing `ENCRYPTION_KEY` without first decrypting and re-encrypting saved provider keys makes those keys unreadable.
+
+## Production deployment notes
+
+Set `APP_ENV=production`, `COOKIE_SECURE=true`, strong unique application/database/encryption secrets, the production Google OAuth redirect URI, and the exact trusted frontend origin. Terminate HTTPS at a trusted reverse proxy and enable its security headers. No shared OpenRouter key is used; every user who generates content must configure a personal key. The built in request limiter is process local, so multi instance deployments must also enforce shared rate limits at the gateway or use a shared limiter. Review [PRODUCT_READINESS_REPORT.md](./PRODUCT_READINESS_REPORT.md) before deployment.

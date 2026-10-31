@@ -130,22 +130,36 @@ class Item(ToolOverrides):
 
 class Subcategory(StrictModel):
     id: str
-    name: str
+    name: str = Field(min_length=1)
     items: list[Item] = Field(default_factory=list)
+
+    @field_validator("id")
+    @classmethod
+    def valid_id(cls, value: str) -> str:
+        if not _SLUG.fullmatch(value):
+            raise ValueError("IDs must use lowercase letters, numbers, and hyphens.")
+        return value
 
 
 class Category(StrictModel):
     id: str
-    name: str
+    name: str = Field(min_length=1)
     subcategories: list[Subcategory] = Field(default_factory=list)
+
+    @field_validator("id")
+    @classmethod
+    def valid_id(cls, value: str) -> str:
+        if not _SLUG.fullmatch(value):
+            raise ValueError("IDs must use lowercase letters, numbers, and hyphens.")
+        return value
 
 
 class Catalogue(StrictModel):
-    version: str
-    description: str
+    version: str = Field(min_length=1)
+    description: str = Field(min_length=1)
     default_model: str = "openrouter/free"
     tool_defaults: ToolDefaults
-    categories: list[Category]
+    categories: list[Category] = Field(min_length=1)
 
 
 def _read_catalogue(path: Path) -> Catalogue:
@@ -163,10 +177,35 @@ def _read_catalogue(path: Path) -> Catalogue:
             "the {name} placeholder."
         ) from error
 
+    seen_category_ids: set[str] = set()
     seen_tool_ids: set[str] = set()
     for category in catalogue.categories:
+        if category.id in seen_category_ids:
+            raise RuntimeError(
+                f"Invalid tool catalogue at {path}: duplicate category ID '{category.id}'."
+            )
+        seen_category_ids.add(category.id)
+        subcategory_ids: set[str] = set()
         for subcategory in category.subcategories:
+            if subcategory.id in subcategory_ids:
+                raise RuntimeError(
+                    f"Invalid tool catalogue at {path}: duplicate subcategory ID "
+                    f"'{subcategory.id}' in category '{category.id}'."
+                )
+            subcategory_ids.add(subcategory.id)
+            item_ids: set[str] = set()
             for item in subcategory.items:
+                if item.id in item_ids:
+                    raise RuntimeError(
+                        f"Invalid tool catalogue at {path}: duplicate item ID "
+                        f"'{item.id}' in subcategory '{subcategory.id}'."
+                    )
+                item_ids.add(item.id)
+                if any(tool.sub_items for tool in item.sub_items):
+                    raise RuntimeError(
+                        f"Invalid tool catalogue at {path}: nested sub_items are not "
+                        "supported; use one sub_items level for individual tools."
+                    )
                 tools = item.sub_items or [item]
                 for tool in tools:
                     if tool.id in seen_tool_ids:
@@ -186,18 +225,33 @@ def clear_catalogue_cache() -> None:
     get_catalogue.cache_clear()
 
 
-def effective_tool(tool: ToolOverrides, defaults: ToolDefaults) -> dict[str, Any]:
+def effective_tool(
+    tool: ToolOverrides,
+    defaults: ToolDefaults,
+    parent: ToolOverrides | None = None,
+) -> dict[str, Any]:
+    parent_enabled = (
+        parent.enabled
+        if parent and parent.enabled is not None
+        else defaults.enabled
+    )
+    description = tool.description or (parent.description if parent else None)
+    input_schema = tool.input_schema or (
+        parent.input_schema if parent else None
+    ) or defaults.input_schema
+    system_prompt = tool.system_prompt or (
+        parent.system_prompt if parent else None
+    ) or defaults.system_prompt
+    tones = tool.tones or (parent.tones if parent else None) or defaults.tones
     return {
         "id": tool.id,
         "name": tool.name,
-        "description": tool.description
+        "description": description
         or defaults.description_template.format(name=tool.name),
-        "input_schema": (tool.input_schema or defaults.input_schema).model_dump(),
-        "system_prompt": tool.system_prompt or defaults.system_prompt,
-        "tones": [
-            tone.model_dump() for tone in (tool.tones or defaults.tones)
-        ],
-        "enabled": defaults.enabled if tool.enabled is None else tool.enabled,
+        "input_schema": input_schema.model_dump(),
+        "system_prompt": system_prompt,
+        "tones": [tone.model_dump() for tone in tones],
+        "enabled": parent_enabled if tool.enabled is None else tool.enabled,
     }
 
 
@@ -208,7 +262,11 @@ def get_tool(tool_id: str) -> dict[str, Any] | None:
             for item in subcategory.items:
                 for tool in item.sub_items or [item]:
                     if tool.id == tool_id:
-                        result = effective_tool(tool, catalogue.tool_defaults)
+                        result = effective_tool(
+                            tool,
+                            catalogue.tool_defaults,
+                            item if item.sub_items else None,
+                        )
                         if not result["enabled"]:
                             return None
                         return result
@@ -242,11 +300,15 @@ def list_items(category_id: str, subcategory_id: str) -> list[dict[str, Any]] | 
     result = []
     for item in subcategory.items:
         tool_nodes = item.sub_items or [item]
-        tools = [
-            effective_tool(tool, get_catalogue().tool_defaults)
-            for tool in tool_nodes
-            if get_tool(tool.id) is not None
-        ]
+        tools = []
+        for tool in tool_nodes:
+            effective = effective_tool(
+                tool,
+                get_catalogue().tool_defaults,
+                item if item.sub_items else None,
+            )
+            if effective["enabled"]:
+                tools.append(effective)
         result.append(
             {
                 "id": item.id,

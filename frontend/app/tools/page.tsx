@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { FormEvent } from "react";
 
 import { api, ApiError, googleLoginUrl } from "@/lib/api";
 import type {
@@ -83,6 +84,7 @@ export default function ToolsPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [working, setWorking] = useState(false);
+  const workingRef = useRef(false);
 
   useEffect(() => {
     api<CatalogueNode[]>("/api/catalogue/categories")
@@ -173,16 +175,14 @@ export default function ToolsPage() {
 
   async function submitTool(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!tool) return;
+    if (!tool || workingRef.current) return;
     setError("");
     setNotice("");
-    setWorking(true);
     const inputs: Record<string, string | number> = {};
     for (const field of tool.input_schema.fields) {
       const value = values[field.name] ?? "";
       if (field.required && !value.trim()) {
         setError(`${field.label} is required.`);
-        setWorking(false);
         return;
       }
       if (value !== "") {
@@ -190,40 +190,50 @@ export default function ToolsPage() {
           field.type === "number" ? Number(value) : value;
       }
     }
+    workingRef.current = true;
+    setWorking(true);
     try {
       const saved = await api<Execution>("/api/executions", {
         method: "POST",
+        headers: { "Idempotency-Key": crypto.randomUUID() },
         body: JSON.stringify({ tool_id: tool.id, inputs, tone }),
       });
       setExecution(saved);
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
+      workingRef.current = false;
       setWorking(false);
     }
   }
 
   async function regenerate() {
-    if (!execution) return;
+    if (!execution || workingRef.current) return;
+    workingRef.current = true;
     setWorking(true);
     setError("");
     try {
       setExecution(
         await api<Execution>(
           `/api/executions/${execution.id}/regenerate`,
-          { method: "POST" },
+          {
+            method: "POST",
+            headers: { "Idempotency-Key": crypto.randomUUID() },
+          },
         ),
       );
       setNotice("A new result is ready.");
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
+      workingRef.current = false;
       setWorking(false);
     }
   }
 
   async function refine() {
-    if (!execution) return;
+    if (!execution || workingRef.current) return;
+    workingRef.current = true;
     setWorking(true);
     setError("");
     setNotice("");
@@ -231,6 +241,7 @@ export default function ToolsPage() {
       setExecution(
         await api<Execution>(`/api/executions/${execution.id}/refine`, {
           method: "POST",
+          headers: { "Idempotency-Key": crypto.randomUUID() },
           body: JSON.stringify({ tone, instructions: refinement }),
         }),
       );
@@ -239,6 +250,7 @@ export default function ToolsPage() {
     } catch (reason) {
       setError(errorMessage(reason));
     } finally {
+      workingRef.current = false;
       setWorking(false);
     }
   }

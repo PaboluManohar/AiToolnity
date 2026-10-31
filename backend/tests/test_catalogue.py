@@ -71,7 +71,7 @@ def test_invalid_duplicate_tool_ids_are_reported(tmp_path: Path) -> None:
     raw["categories"][0]["subcategories"][0]["items"].append(copy)
     path = tmp_path / "duplicate-tools.yaml"
     path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
-    with pytest.raises(RuntimeError, match="duplicate tool ID"):
+    with pytest.raises(RuntimeError, match="duplicate item ID"):
         _read_catalogue(path)
 
 
@@ -81,4 +81,24 @@ def test_invalid_input_schema_is_rejected(tmp_path: Path) -> None:
     path = tmp_path / "invalid-schema.yaml"
     path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
     with pytest.raises(RuntimeError, match="Invalid tool catalogue"):
+        _read_catalogue(path)
+
+
+def test_disabled_tools_and_parent_entries_are_not_executable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    raw = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    item = raw["categories"][0]["subcategories"][0]["items"][0]
+    item["enabled"] = False
+    path = tmp_path / "disabled-tools.yaml"
+    path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+    monkeypatch.setenv("TOOLS_CONFIG_PATH", str(path))
+    clear_catalogue_cache()
+    assert get_tool(item["id"]) is None
+
+
+def test_invalid_catalogue_file_reports_path(tmp_path: Path) -> None:
+    path = tmp_path / "malformed.yaml"
+    path.write_text("categories: [", encoding="utf-8")
+    with pytest.raises(RuntimeError, match=str(path)):
         _read_catalogue(path)
